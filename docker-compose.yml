@@ -12,6 +12,17 @@ services:
        MYSQL_USER: wordpress
        MYSQL_PASSWORD: wordpress
 
+   pma:
+      image: dnhsoft/phpmyadmin
+      ports:
+       - "8003:80"
+      links:
+       - db:db
+      environment:
+        DBHOST: db
+        DBUSER: wordpress
+        DBPASS: wordpress
+
    wordpress:
      depends_on:
        - db
