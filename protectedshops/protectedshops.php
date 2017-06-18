@@ -5,6 +5,7 @@ Plugin Name: ProtectedShops
 */
 
 add_action( 'init', 'activate');
+add_action( 'wp', 'protectedshops_frontpage_init' );
 
 function activate()
 {
@@ -21,4 +22,13 @@ function activate()
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
+}
+
+function protectedshops_frontpage_init()
+{
+    if(is_page('protectedshops')){
+        $dir = plugin_dir_path( __FILE__ );
+        include($dir."frontend.php");
+        die();
+    }
 }
