@@ -9,8 +9,38 @@
     ?>
 </head>
 <body>
-<h1>Here's my plugin front-end page</h1>
-<h2>You can put anything you want in this php file.</h2>
+<p>Project Name: <?php echo $psPage[0]->moduleId; ?></p>
+<form method="POST">
+    <input type="hidden" name="moduleId" value="<?php echo $psPage[0]->moduleId; ?>" />
+    <input type="hidden" name="command" value="create_project" />
+    <label for="title">Project title</label>
+    <input type="text" name="title" id="title">
+    <br />
+    <label for="url">Project URL</label>
+    <input type="text" name="url" id="url">
+    <br />
+
+    <input type="submit" value="Create New Project" />
+</form>
+
+<div>
+    <table>
+        <tr>
+            <th>projectId</th>
+            <th>title</th>
+            <th>url</th>
+            <th>module</th>
+        </tr>
+    <?php foreach ($projects as $project) {?>
+        <tr>
+            <td><?php echo $project->projectId; ?></td>
+            <td><?php echo $project->title; ?></td>
+            <td><?php echo $project->url; ?></td>
+            <td><?php echo $project->moduleId; ?></td>
+        </tr>
+    <?php }?>
+    </table>
+</div>
 <?php
 //call the wp foooter
 wp_footer();
