@@ -35,6 +35,20 @@ class Ds_Communicator
         return json_decode($response, 1);
     }
 
+    public function getQuestionary($partner, $projectId)
+    {
+        $function = "partners/" . $partner . "/shops/" . $projectId . "/questionary";
+
+        return $this->apiRequest('GET', $function);
+    }
+
+    public function answerQuestion($partner, $projectId, $answers)
+    {
+        $function = "partners/" . $partner . "/shops/" . $projectId . "/answers";
+
+        return $this->apiRequest('GET', $function, array('answers' => $answers));
+    }
+
     private function getAccessToken()
     {
         $data = array(

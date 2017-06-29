@@ -5,9 +5,10 @@ Plugin Name: ProtectedShops
 */
 
 add_action( 'init', 'activate');
-//add_action( 'wp', 'protectedshops_frontpage_init' );
+//add_action('wp', 'protectedshops_frontpage_init');
 add_action('admin_menu', 'awesome_page_create');
-add_action( 'wp', 'protectedshops_frontend_page_init');
+add_action('wp', 'protectedshops_frontend_page_init');
+add_action('wp_enqueue_scripts', 'add_scripts');
 
 function activate()
 {
@@ -130,6 +131,7 @@ function protectedshops_admin_page_display()
 function protectedshops_frontend_page_init()
 {
     global $wpdb;
+    $pluginDir = plugin_dir_path( __FILE__ );
     $pageName = get_query_var('pagename');
     $post_table =$wpdb->prefix . 'posts';
     $projects_table = $wpdb->prefix . 'ps_project';
@@ -139,18 +141,18 @@ function protectedshops_frontend_page_init()
                        JOIN $module_page_table ON $post_table.ID = $module_page_table.wp_post_ID
                        WHERE $post_table.post_title = '$pageName';";
 
+    $protected_shop_settings_table = $wpdb->prefix . 'ps_settings';
+    $credentialsSql = "SELECT * FROM $protected_shop_settings_table;";
+    $settings = $wpdb->get_results($credentialsSql);
+    require_once 'ds_communicator.php';
+    $dsCommunicator = new Ds_Communicator($settings[0]->url, $settings[0]->partnerId, $settings[0]->partner, $settings[0]->partnerSecret);
+
     $psPage = $wpdb->get_results($selectPagesSql);
     if(is_page($psPage[0]->post_title) && $psPage) {
-        $dir = plugin_dir_path( __FILE__ );
-        require_once $dir . 'ds_communicator.php';
+        require_once $pluginDir . 'ds_communicator.php';
 
         if ($_POST['moduleId']) {
-            $protected_shop_settings_table = $wpdb->prefix . 'ps_settings';
-            $credentialsSql = "SELECT * FROM $protected_shop_settings_table;";
-            $settings = $wpdb->get_results($credentialsSql);
-
             if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
-                $dsCommunicator = new Ds_Communicator($settings[0]->url, $settings[0]->partnerId, $settings[0]->partner, $settings[0]->partnerSecret);
                 $newProject = $dsCommunicator->createProject($_POST['moduleId'], $_POST['title'], $_POST['url']);
                 if (array_key_exists('shopId', $newProject)) {
                     $wpdb->insert(
@@ -169,13 +171,28 @@ function protectedshops_frontend_page_init()
             }
         }
 
+        if (array_key_exists('command', $_GET) && "buildQuestionary" == $_GET['command']) {
+            echo $dsCommunicator->getQuestionary($_GET['partner'], $_GET['projectId']);
+            die();
+        } elseif (array_key_exists('command', $_GET) && "answerSave" == $_GET['command']) {
+            echo $dsCommunicator->answerQuestion($_GET['partner'], $_GET['projectId'], $_POST['answers']);
+            die();
+        }
+
         //Prepare data for-frontend
         $sqlProjects = "SELECT * FROM $projects_table";
         $projects = $wpdb->get_results($sqlProjects);
 
-        include($dir . "frontend.php");
+        $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
+        include($pluginDir . "frontend.php");
         die();
     }
+}
+
+function add_scripts()
+{
+    wp_register_script('custom-script', plugins_url('integration-package/js/questionary.js', __FILE__ ), array( 'jquery' ));
+    wp_enqueue_script('custom-script');
 }
 
 //function protectedshops_frontpage_init()
