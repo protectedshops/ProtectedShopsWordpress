@@ -54,7 +54,7 @@
             <td><?php echo date('d.m.Y'); ?></td>
             <td><a class="generate-questionary" data-url="<?php echo $project->url; ?>" data-partner="<?php echo $project->partner; ?>" data-projectId="<?php echo $project->projectId; ?>" href="#">Fragebogen bearbeiten</a></td>
             <td><a href="?tab=downloads&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>">Dukumente herunterladen</a></td>
-            <td><a href="#">(löschen)</a></td>
+            <td><a href="?command=delete_project&project=<?php echo $project->projectId; ?>">(löschen)</a></td>
         </tr>
     <?php }?>
     </table>

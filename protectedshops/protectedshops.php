@@ -192,6 +192,11 @@ function protectedshops_frontend_page_init()
             $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
             include($pluginDir . "tabs/document_list.php");
         } else {
+            if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
+                $deleteSql = "DELETE FROM $projects_table WHERE projectId='" . sanitize_text_field($_GET['project']) ."';";
+                $wpdb->query($deleteSql);
+            }
+
             $sqlProjects = "SELECT * FROM $projects_table";
             $projects = $wpdb->get_results($sqlProjects);
             $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
