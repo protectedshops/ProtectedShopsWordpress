@@ -4,11 +4,37 @@
 Plugin Name: ProtectedShops
 */
 
+/*Plugin helpers*/
+require_once 'helpers.php';
+
 add_action( 'init', 'activate');
 //add_action('wp', 'protectedshops_frontpage_init');
-add_action('admin_menu', 'awesome_page_create');
-add_action('wp', 'protectedshops_frontend_page_init');
+add_action('admin_menu', 'protected_shops_admin_page');
+//add_action('wp', 'protectedshops_frontend_page_init');
+add_filter('the_content', 'protectedshops_frontend_page_init');
 add_action('wp_enqueue_scripts', 'add_scripts');
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'protectedshops/v1', '/questionary', array(
+        'methods' => 'GET',
+        'callback' => 'buildQuestionary',
+    ) );
+
+    register_rest_route( 'protectedshops/v1', '/questionary/answer', array(
+        'methods' => 'POST',
+        'callback' => 'saveAnswers',
+    ) );
+
+    register_rest_route( 'protectedshops/v1', '/questionary/download', array(
+        'methods' => 'GET',
+        'callback' => 'downloadDocument',
+    ) );
+} );
+
+add_action( 'wp_default_scripts', function( $scripts ) {
+    if ( ! empty( $scripts->registered['jquery'] ) ) {
+        $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
+    }
+} );
 
 function activate()
 {
@@ -53,7 +79,7 @@ function activate()
 }
 
 
-function awesome_page_create() {
+function protected_shops_admin_page() {
     $page_title = 'ProtectedShops Settings';
     $menu_title = 'ProtectedShops';
     $capability = 'edit_posts';
@@ -132,28 +158,16 @@ function protectedshops_frontend_page_init()
 {
     global $wpdb;
     $pluginDir = plugin_dir_path( __FILE__ );
-    $pageName = get_query_var('pagename');
-    $post_table =$wpdb->prefix . 'posts';
     $projects_table = $wpdb->prefix . 'ps_project';
-    $module_page_table = $wpdb->prefix . 'ps_module_page';
-    $selectPagesSql = "SELECT $post_table.post_title, $module_page_table.moduleId
-                       FROM $post_table
-                       JOIN $module_page_table ON $post_table.ID = $module_page_table.wp_post_ID
-                       WHERE $post_table.post_title = '$pageName';";
 
-    $protected_shop_settings_table = $wpdb->prefix . 'ps_settings';
-    $credentialsSql = "SELECT * FROM $protected_shop_settings_table;";
-    $settings = $wpdb->get_results($credentialsSql);
-    require_once 'ds_communicator.php';
-    $dsCommunicator = new Ds_Communicator($settings[0]->url, $settings[0]->partnerId, $settings[0]->partner, $settings[0]->partnerSecret);
+    $docServer = ps_document_server();
+    $psPage = ps_get_page();
 
-    $psPage = $wpdb->get_results($selectPagesSql);
     if(is_page($psPage[0]->post_title) && $psPage) {
-        require_once $pluginDir . 'ds_communicator.php';
-
         if ($_POST['moduleId']) {
             if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
-                $newProject = $dsCommunicator->createProject($_POST['moduleId'], $_POST['title'], $_POST['url']);
+
+                $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title'], $_POST['url']);
                 if (array_key_exists('shopId', $newProject)) {
                     $wpdb->insert(
                         $projects_table,
@@ -171,35 +185,83 @@ function protectedshops_frontend_page_init()
             }
         }
 
-        if (array_key_exists('command', $_GET) && "buildQuestionary" == $_GET['command']) {
-            echo $dsCommunicator->getQuestionary($_GET['partner'], $_GET['projectId']);
-            die();
-        } elseif (array_key_exists('command', $_GET) && "answerSave" == $_GET['command']) {
-            echo $dsCommunicator->answerQuestion($_GET['partner'], $_GET['projectId'], $_POST['answers']);
-            die();
+        if (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
+            $pluginURL = plugin_dir_url(__FILE__);
+            $sqlProject = "SELECT * FROM $projects_table WHERE projectId='" . sanitize_text_field($_GET['project']) ."';";
+            $project = $wpdb->get_results($sqlProject);
+            $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
+            include($pluginDir . "tabs/document_list.php");
+        } else {
+            $sqlProjects = "SELECT * FROM $projects_table";
+            $projects = $wpdb->get_results($sqlProjects);
+            $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
+            include($pluginDir . "tabs/project_list.php");
         }
-
-        //Prepare data for-frontend
-        $sqlProjects = "SELECT * FROM $projects_table";
-        $projects = $wpdb->get_results($sqlProjects);
-
-        $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
-        include($pluginDir . "frontend.php");
-        die();
     }
 }
 
 function add_scripts()
 {
-    wp_register_script('custom-script', plugins_url('integration-package/js/questionary.js', __FILE__ ), array( 'jquery' ));
-    wp_enqueue_script('custom-script');
+    wp_register_script('questionary', plugins_url('integration-package/js/questionary.js', __FILE__ ), array( 'jquery' ));
+    wp_register_script('dust_core', plugins_url('integration-package/js/dust-core.js', __FILE__ ), array( ));
+    wp_register_script('dust', plugins_url('integration-package/js/dust-full.js', __FILE__ ), array( ));
+    wp_register_script('dust-helper', plugins_url('integration-package/js/dust-helpers.js', __FILE__ ), array());
+
+    wp_enqueue_script('questionary');
+    wp_enqueue_script('dust_core');
+    wp_enqueue_script('dust');
+    wp_enqueue_script('dust-helper');
 }
 
-//function protectedshops_frontpage_init()
-//{
-//    if(is_page('protectedshops')){
-//        $dir = plugin_dir_path( __FILE__ );
-//        include($dir."frontend.php");
-//        die();
-//    }
-//}
+function buildQuestionary(WP_REST_Request $request)
+{
+    $partner = $request->get_param('partner');
+    $project = $request->get_param('project');
+
+    $docServer = ps_document_server();
+
+    return $docServer->getQuestionary($partner, $project);
+}
+
+function saveAnswers(WP_REST_Request $request)
+{
+    $partner = $request->get_param('partner');
+    $project = $request->get_param('project');
+    $answers = $request->get_param('answers');
+
+    $docServer = ps_document_server();
+
+    return $docServer->answerQuestion($partner, $project, $answers);
+}
+
+function downloadDocument(WP_REST_Request $request)
+{
+    $partner = $request->get_param('partner');
+    $project = $request->get_param('project');
+    $docType = $request->get_param('docType');
+    $formatType = $request->get_param('formatType');
+
+    $docServer = ps_document_server();
+
+    $remoteResponse = $docServer->downloadDocument($partner, $project, $docType, $formatType);
+    $remoteResponse = json_decode($remoteResponse);
+
+    if ('base64' === $remoteResponse->contentEncoding)
+    {
+        $binaryData = base64_decode($remoteResponse->content);
+    }
+    else
+    {
+        $binaryData = $remoteResponse->content;
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-disposition: attachment; filename=' . "$docType.$formatType");
+    header('Content-Length: ' . strlen($binaryData));
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Expires: 0');
+    header('Pragma: public');
+    echo $binaryData;
+    exit;
+}

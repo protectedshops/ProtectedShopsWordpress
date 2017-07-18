@@ -1,11 +1,30 @@
 <?php
 
-class Ds_Communicator
+final class DocumentServer
 {
     private $apiUrl;
     private $partnerId;
     private $clientSecret;
     private $partner;
+
+    private static $me = null;
+
+    /**
+     * @param $apiUrl
+     * @param $partnerId
+     * @param $partner
+     * @param $clientSecret
+     *
+     * @return DocumentServer
+     */
+    public static function me($apiUrl, $partnerId, $partner, $clientSecret)
+    {
+        if (static::$me == null) {
+            static::$me = new DocumentServer($apiUrl, $partnerId, $partner, $clientSecret);
+        }
+
+        return static::$me;
+    }
 
     /**
      * Ds_Communicator constructor.
@@ -22,6 +41,12 @@ class Ds_Communicator
         $this->partner = $partner;
     }
 
+    /**
+     * @param $module
+     * @param $title
+     * @param $url
+     * @return mixed
+     */
     public function createProject($module, $title, $url)
     {
         $function = 'partners/' . $this->partner .'/shops';
@@ -35,6 +60,11 @@ class Ds_Communicator
         return json_decode($response, 1);
     }
 
+    /**
+     * @param $partner
+     * @param $projectId
+     * @return mixed
+     */
     public function getQuestionary($partner, $projectId)
     {
         $function = "partners/" . $partner . "/shops/" . $projectId . "/questionary";
@@ -42,6 +72,12 @@ class Ds_Communicator
         return $this->apiRequest('GET', $function);
     }
 
+    /**
+     * @param $partner
+     * @param $projectId
+     * @param $answers
+     * @return mixed
+     */
     public function answerQuestion($partner, $projectId, $answers)
     {
         $function = "partners/" . $partner . "/shops/" . $projectId . "/answers";
@@ -49,6 +85,36 @@ class Ds_Communicator
         return $this->apiRequest('GET', $function, array('answers' => $answers));
     }
 
+    /**
+     * @param $partner
+     * @param $projectId
+     * @return mixed
+     */
+    public function getDocuments($partner, $projectId)
+    {
+        $function = "partners/" . $partner . "/shops/" . $projectId . "/documents";
+
+        return $this->apiRequest('GET', $function);
+    }
+
+    /**
+     * @param $partner
+     * @param $projectId
+     * @param $docType
+     * @param $formatType
+     * @return mixed
+     */
+    public function downloadDocument($partner, $projectId, $docType, $formatType)
+    {
+        $function = "partners/" . $partner . "/shops/" . $projectId . "/documents/" . $docType . "/contentformat/" . $formatType;
+        $response = $this->apiRequest('GET', $function);
+
+        return $response;
+    }
+
+    /**
+     * @return mixed
+     */
     private function getAccessToken()
     {
         $data = array(
@@ -72,6 +138,12 @@ class Ds_Communicator
         return $response['access_token'];
     }
 
+    /**
+     * @param $httpMethod
+     * @param $apiFunction
+     * @param null $data
+     * @return mixed
+     */
     private function apiRequest($httpMethod, $apiFunction, $data = null)
     {
         $dsUrl = "$this->apiUrl/v2.0/de/$apiFunction/format/json";
@@ -111,3 +183,4 @@ class Ds_Communicator
         return $response;
     }
 }
+

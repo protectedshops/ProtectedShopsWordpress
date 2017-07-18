@@ -191,7 +191,7 @@
                 url: config.buildUrl,
                 dataType: "json",
                 success: function (response) {
-
+                    response = JSON.parse(response);
                     filterQuestions(response.content.documents);
 
                     dust.render('questionary', {documents: response.content.documents, config: config, tr: translation}, function (err, out) {
