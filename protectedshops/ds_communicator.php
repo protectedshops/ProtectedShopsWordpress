@@ -49,6 +49,21 @@ class Ds_Communicator
         return $this->apiRequest('GET', $function, array('answers' => $answers));
     }
 
+    public function getDocuments($partner, $projectId)
+    {
+        $function = "partners/" . $partner . "/shops/" . $projectId . "/documents";
+
+        return $this->apiRequest('GET', $function);
+    }
+
+    public function downloadDocument($partner, $projectId, $docType, $formatType)
+    {
+        $function = "partners/" . $partner . "/shops/" . $projectId . "/documents/" . $docType . "/contentformat/" . $formatType;
+        $response = $this->apiRequest('GET', $function);
+
+        return $response;
+    }
+
     private function getAccessToken()
     {
         $data = array(
