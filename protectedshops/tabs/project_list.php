@@ -72,7 +72,7 @@
 
 <section id="questionary">
 
-    <div id="questionary-holder" style="border: 2px solid #adb6bd;">
+    <div id="questionary-holder" style="display: none; padding: 5px; border: 2px solid #adb6bd;">
         <div id="main-questionary"></div>
     </div>
     <div style="display: none;" id="loadingIndicator">

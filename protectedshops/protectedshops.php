@@ -204,7 +204,7 @@ function protectedshops_frontend_page_init($text)
                 $wpdb->query($deleteSql);
             }
 
-            $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID;";
+            $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND moduleId='" . $psPage[0]->moduleId . "';";
             $remoteProjects = ps_get_remote_projects($settings[0]->partner);
             $projects = $wpdb->get_results($sqlProjects);
             foreach ($projects as $project) {

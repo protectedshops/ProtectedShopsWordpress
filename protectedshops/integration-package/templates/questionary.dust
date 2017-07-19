@@ -46,7 +46,7 @@
     </div>
     {! ---- questionary ---- !}
     <div id="content" class="content-blog">		
-        <form novalidate id="questionnaire-form" action="{config.submitQuestionaryUrl}" method="post">
+        <form class="form" novalidate id="questionnaire-form" action="{config.submitQuestionaryUrl}" method="post">
             <div id="questionnaire">
                 {#documents}
                 <div class="questionnaire-document document-{$idx}">
