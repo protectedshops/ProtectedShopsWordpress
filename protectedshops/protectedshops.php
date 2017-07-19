@@ -168,6 +168,7 @@ function protectedshops_frontend_page_init($text)
     /*$wpNonce is used for the plugin API calls so the user can authenticate*/
     $wpNonce = wp_create_nonce('wp_rest');
     $settings = ps_get_settings();
+    $pluginURL = plugin_dir_url(__FILE__);
 
     if(is_page($psPage[0]->post_title) && $psPage) {
         if (!is_user_logged_in()) {
@@ -193,7 +194,6 @@ function protectedshops_frontend_page_init($text)
                 }
             }
         } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
-            $pluginURL = plugin_dir_url(__FILE__);
             $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
             $project = $wpdb->get_results($sqlProject);
             $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);

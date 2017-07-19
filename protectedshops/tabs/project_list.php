@@ -9,6 +9,7 @@
                 saveUrl: "/wp-json/protectedshops/v1/questionary/answer?_wpnonce=<?php echo $wpNonce; ?>&partner="+$(this).data('partner')+"&project=" + $(this).data('projectid'),
                 beforeReload: function () {
                     $('#loadingIndicator').show();
+                    $('#questionary-holder').hide();
                 },
                 afterReload: function () {
                     $('#loadingIndicator').hide();
@@ -20,25 +21,34 @@
                 }
             });
         });
+
+        $("#show_create_project_table_button").click(function(){
+            $("#show_create_project_table_button").hide();
+            $("#project_create_form").show();
+        });
     });
 </script>
 
-<p>Project Name: <?php echo $psPage[0]->moduleId; ?></p>
-<form method="POST">
-    <input type="hidden" name="moduleId" value="<?php echo $psPage[0]->moduleId; ?>" />
-    <input type="hidden" name="command" value="create_project" />
-    <label for="title">Project title</label>
-    <input type="text" name="title" id="title">
-    <br />
-    <label for="url">Project URL</label>
-    <input type="text" name="url" id="url">
-    <br />
-
-    <input type="submit" value="Create New Project" />
-</form>
-
-<div>
-    <table>
+<p>
+    <button id="show_create_project_table_button" class="button-large">Neues Dokument hinzufügen</button>
+    <div id="project_create_form" style="display: none;">
+        <form class="form" method="POST">
+            <input type="hidden" name="moduleId" value="<?php echo $psPage[0]->moduleId; ?>" />
+            <input type="hidden" name="command" value="create_project" />
+            <label for="title">Project title</label>
+            <input type="text" name="title" id="title">
+            <br />
+            <br />
+            <label for="url">Project URL</label>
+            <input type="text" name="url" id="url">
+            <br />
+            <br />
+            <button class="button-large" type="submit">Neues Dokument hinzufügen </button>
+        </form>
+    </div>
+</p>
+<p>
+    <table class="table">
         <tr>
             <th>Name des Projekts</th>
             <th>Status</th>
@@ -58,12 +68,14 @@
         </tr>
     <?php }?>
     </table>
-</div>
+</p>
 
 <section id="questionary">
 
-    <div id="questionary-holder">
+    <div id="questionary-holder" style="border: 2px solid #adb6bd;">
         <div id="main-questionary"></div>
-        <div id="loadingIndicator">Loading...</div>
+    </div>
+    <div style="display: none;" id="loadingIndicator">
+        <img src="<?php echo $pluginURL . "assets/loader.gif"; ?>" />
     </div>
 </section>

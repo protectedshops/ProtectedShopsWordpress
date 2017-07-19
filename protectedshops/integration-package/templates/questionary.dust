@@ -30,13 +30,6 @@
 </script>
 
 <div class="questionary-container">
-    <div class="topbar">
-        <label for="hideAnswered">
-            {tr.hideAnsweredQuestions}
-        </label>
-        <input id="hideAnswered" name="hideAnswered" type="checkbox" {@eq key=config.hideAnswered type="boolean" value="true"}checked="true"{/eq}/>
-        <div style="clear: both"></div>
-    </div>
     <div id="hide-answered-warning" class="warning {@eq key="false" type="boolean" value=config.hideAnswered}hidden{/eq}">
          <h2>{tr.hiddenQuestionsWarningHeader}</h2>
         {tr.hiddenQuestionsWarningText}
@@ -67,14 +60,14 @@
                         {?variables}
                         <div class="variables-container">
                             <h3><p class="question-title">{tr.pleaseFill}:</p></h3>
-                            <button class="editVariables" type="button">({tr.edit})</button>
+                            <button class="button-small editVariables" type="button">({tr.edit})</button>
 
                             {#variables}
                                 {>variable /}
                             {/variables}
 
                             <div class="questionnaire-error-msg">{tr.pleaseSelect}:</div>
-                            <button class="saveVariables" onClick="checkIfEmpty(event)" type="button">{tr.save}</button>
+                            <button class="button-small saveVariables" onClick="checkIfEmpty(event)" type="button">{tr.save}</button>
                             <div class="clear-fix"></div>
                         </div>
                         {/variables}
@@ -86,9 +79,9 @@
             {! ---- buttons ---- !}
             <div class="btn-navigations" style="margin: 20px 0 0" >
                 <div class="questionnaire-warning-text">{tr.questionaryBottomWarning}</div>
-                <button class="prevDocument inactive" type="button">{tr.back}</button>
-                <button class="nextDocument inactive" type="button">{tr.forward}</button>
-                <button id="submitQuestionnaire" class="inactive" type="button" >{tr.finish}</button>
+                <button class="button-large prevDocument inactive" type="button">{tr.back}</button>
+                <button class="button-large nextDocument inactive" type="button">{tr.forward}</button>
+                <button id="submitQuestionnaire" class="button-large inactive" type="button" >{tr.finish}</button>
                 <div class="clear-fix"></div>
             </div>
         </form>

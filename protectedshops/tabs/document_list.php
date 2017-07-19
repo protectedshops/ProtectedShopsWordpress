@@ -1,5 +1,5 @@
 <div>
-    <table>
+    <table class="table">
         <tr>
             <th>Name des Dokument</th>
             <th></th>
