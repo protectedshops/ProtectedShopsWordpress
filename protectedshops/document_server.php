@@ -112,6 +112,14 @@ final class DocumentServer
         return $response;
     }
 
+    public function getProjects($partner)
+    {
+        $function = "partners/" . $partner . "/shops";
+        $response = $this->apiRequest('GET', $function);
+
+        return $response;
+    }
+
     /**
      * @return mixed
      */

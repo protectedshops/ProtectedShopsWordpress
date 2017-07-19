@@ -5,8 +5,8 @@
             ps.questionary({
                 container: "#main-questionary",
                 templatePath: "<?php echo $psTemplatesUrl; ?>/",
-                buildUrl: "/wp-json/protectedshops/v1/questionary?partner="+$(this).data('partner')+"&project=" + $(this).data('projectid'),
-                saveUrl: "/wp-json/protectedshops/v1/questionary/answer?partner="+$(this).data('partner')+"&project=" + $(this).data('projectid'),
+                buildUrl: "/wp-json/protectedshops/v1/questionary?_wpnonce=<?php echo $wpNonce; ?>&partner="+$(this).data('partner')+"&project=" + $(this).data('projectid'),
+                saveUrl: "/wp-json/protectedshops/v1/questionary/answer?_wpnonce=<?php echo $wpNonce; ?>&partner="+$(this).data('partner')+"&project=" + $(this).data('projectid'),
                 beforeReload: function () {
                     $('#loadingIndicator').show();
                 },
@@ -50,8 +50,8 @@
     <?php foreach ($projects as $project) {?>
         <tr>
             <td><?php echo $project->title; ?></td>
-            <td><?php echo "vollstanding"; ?></td>
-            <td><?php echo date('d.m.Y'); ?></td>
+            <td><?php if ($project->isValid) { echo "vollständig"; } else { echo "unvollständig"; }; ?></td>
+            <td><?php echo $project->changed; ?></td>
             <td><a class="generate-questionary" data-url="<?php echo $project->url; ?>" data-partner="<?php echo $project->partner; ?>" data-projectId="<?php echo $project->projectId; ?>" href="#">Fragebogen bearbeiten</a></td>
             <td><a href="?tab=downloads&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>">Dukumente herunterladen</a></td>
             <td><a href="?command=delete_project&project=<?php echo $project->projectId; ?>">(löschen)</a></td>

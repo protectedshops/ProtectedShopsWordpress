@@ -69,6 +69,8 @@ function activate()
         moduleId varchar(255) NOT NULL,
         bundleId INT NOT NULL,
         partner varchar(255) NOT NULL,
+        changed TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        wp_user_ID INT NOT NULL,
         PRIMARY KEY (ID)
     ) $charset_collate;";
 
@@ -154,7 +156,7 @@ function protectedshops_admin_page_display()
     include 'protectedshops_settings.php';
 }
 
-function protectedshops_frontend_page_init()
+function protectedshops_frontend_page_init($text)
 {
     global $wpdb;
     $pluginDir = plugin_dir_path( __FILE__ );
@@ -162,9 +164,15 @@ function protectedshops_frontend_page_init()
 
     $docServer = ps_document_server();
     $psPage = ps_get_page();
+    $wpUser = wp_get_current_user();
+    /*$wpNonce is used for the plugin API calls so the user can authenticate*/
+    $wpNonce = wp_create_nonce('wp_rest');
+    $settings = ps_get_settings();
 
     if(is_page($psPage[0]->post_title) && $psPage) {
-        if ($_POST['moduleId']) {
+        if (!is_user_logged_in()) {
+            include($pluginDir . "tabs/login_first.php");
+        } elseif ($_POST['moduleId']) {
             if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
 
                 $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title'], $_POST['url']);
@@ -177,31 +185,37 @@ function protectedshops_frontend_page_init()
                             'url' => $_POST['url'],
                             'moduleId' => $newProject['module'],
                             'bundleId' => $newProject['bundleId'],
-                            'partner' => $newProject['partnerId']
+                            'partner' => $newProject['partnerId'],
+                            'wp_user_ID' => $wpUser->ID
                         ),
                         array('%s', '%s', '%s', '%s', '%s', '%s')
                     );
                 }
             }
-        }
-
-        if (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
+        } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
             $pluginURL = plugin_dir_url(__FILE__);
-            $sqlProject = "SELECT * FROM $projects_table WHERE projectId='" . sanitize_text_field($_GET['project']) ."';";
+            $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
             $project = $wpdb->get_results($sqlProject);
             $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
             include($pluginDir . "tabs/document_list.php");
         } else {
             if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
-                $deleteSql = "DELETE FROM $projects_table WHERE projectId='" . sanitize_text_field($_GET['project']) ."';";
+                $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
                 $wpdb->query($deleteSql);
             }
 
-            $sqlProjects = "SELECT * FROM $projects_table";
+            $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID;";
+            $remoteProjects = ps_get_remote_projects($settings[0]->partner);
             $projects = $wpdb->get_results($sqlProjects);
+            foreach ($projects as $project) {
+                $project->isValid = is_project_valid($remoteProjects, $project->projectId);
+            }
+
             $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
             include($pluginDir . "tabs/project_list.php");
         }
+    } else {
+        return $text;
     }
 }
 
@@ -222,6 +236,11 @@ function buildQuestionary(WP_REST_Request $request)
 {
     $partner = $request->get_param('partner');
     $project = $request->get_param('project');
+    $wpUser = wp_get_current_user();
+
+    if (!ps_is_project_access_allowed($project, $wpUser->ID)) {
+        return '{}';
+    }
 
     $docServer = ps_document_server();
 
@@ -233,7 +252,13 @@ function saveAnswers(WP_REST_Request $request)
     $partner = $request->get_param('partner');
     $project = $request->get_param('project');
     $answers = $request->get_param('answers');
+    $wpUser = wp_get_current_user();
 
+    if (!ps_is_project_access_allowed($project, $wpUser->ID)) {
+        return '{}';
+    }
+
+    ps_project_change($partner, $project);
     $docServer = ps_document_server();
 
     return $docServer->answerQuestion($partner, $project, $answers);
@@ -245,6 +270,11 @@ function downloadDocument(WP_REST_Request $request)
     $project = $request->get_param('project');
     $docType = $request->get_param('docType');
     $formatType = $request->get_param('formatType');
+    $wpUser = wp_get_current_user();
+
+    if (!ps_is_project_access_allowed($project, $wpUser->ID)) {
+        return '{}';
+    }
 
     $docServer = ps_document_server();
 
