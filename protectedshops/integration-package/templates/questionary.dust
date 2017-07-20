@@ -92,7 +92,7 @@
 </script>
 
 <div class="questionary-container">
-    <div id="hide-answered-warning" class="warning {@eq key="false" type="boolean" value=config.hideAnswered}hidden{/eq}">
+    <div style="display: none;" id="hide-answered-warning" class="warning {@eq key="false" type="boolean" value=config.hideAnswered}hidden{/eq}">
          <h2>{tr.hiddenQuestionsWarningHeader}</h2>
         {tr.hiddenQuestionsWarningText}
     </div>

@@ -205,8 +205,15 @@ function protectedshops_frontend_page_init($text)
         } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
             $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
             $project = $wpdb->get_results($sqlProject);
-            $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
-            include($pluginDir . "tabs/document_list.php");
+            $remoteProject = json_decode($docServer->getProject($_GET['partner'], $_GET['project']), 1);
+
+            if ($remoteProject['answersValid'] == 1 && $remoteProject['hasDraftAnswers'] == 0) {
+                $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
+                include($pluginDir . "tabs/document_list.php");
+            } else {
+                include($pluginDir . "tabs/no_documents.php");
+            }
+
         } else {
             LOAD_PAGE:
             if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
