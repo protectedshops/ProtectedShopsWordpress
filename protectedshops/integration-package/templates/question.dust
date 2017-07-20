@@ -1,4 +1,4 @@
-<div class="form question {@eq key="true" type="boolean" value=hidden}hidden{/eq}">
+<div style="border-bottom: 1px solid lightgray;" class="form question" {@eq key="true" type="boolean" value=hidden}style="display: none;"{/eq}>
 	<h3><p class="question-title">{title}</p></h3>
 	<button class="button-small editQuestionnaire" type="button">({tr.edit})</button>
 	<p>{description|s}</p>

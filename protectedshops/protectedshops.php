@@ -192,6 +192,7 @@ function protectedshops_frontend_page_init($text)
                         array('%s', '%s', '%s', '%s', '%s', '%s')
                     );
                 }
+                goto LOAD_PAGE;
             }
         } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
             $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
@@ -199,6 +200,7 @@ function protectedshops_frontend_page_init($text)
             $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
             include($pluginDir . "tabs/document_list.php");
         } else {
+            LOAD_PAGE:
             if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
                 $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
                 $wpdb->query($deleteSql);

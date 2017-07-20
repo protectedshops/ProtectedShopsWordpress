@@ -1,7 +1,69 @@
 <link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />
 <link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />
+<style type="text/css">
 
+     ul.questionnaire-nav {
+          display: block;
+          list-style-type: none;
+          margin-bottom: 2px;
+          padding: 0;
+      }
+
+      ul.questionnaire-nav>li {
+          display: inline;
+          float: left;
+          width: 150px;
+          height: 46px;
+          background-color: white;
+          margin-left: 3px;
+          border-right: 1px solid black;
+          border-bottom: 1px solid black;
+          border-radius: 4px;
+          overflow: hidden;
+      }
+
+    ul.questionnaire-nav>li a {
+        padding: 2px;
+        height: 100%;
+    }
+
+    ul.questionnaire-nav>li a.selected {
+        font-weight: bold;
+    }
+
+      ul.questionnaire-nav>li a:hover {
+          color: black;
+      }
+
+      ul.questionnaire-nav>li:hover {
+          background-color: lightgray;
+      }
+
+      ul.questionnaire-nav>li.selected {
+          background-color: lightgray;
+      }
+
+    .questionnaire-nav li a{
+        display: block;
+    }
+    .done-questions{
+      display: none;
+    }
+    .tab-success .done-questions, .not-done-questions{
+        display: inline;
+        width: 10%;
+        float: left;
+    }
+    .tab-success .not-done-questions {
+        display: none;
+    }
+    .nav-text {
+        display: inline;
+        width: 850%;
+        float: left;
+    }
+</style>
 <script type="text/javascript" src="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script>
     function handleCheckBoxClicked(input) {
@@ -35,11 +97,20 @@
         {tr.hiddenQuestionsWarningText}
     </div>
     {! ---- navigation ---- !}
-    <div id="sidebar" style="margin-left: 30px">
-        <div class="left-menu-border"></div>
+    <div style="display: inline; float: left; width: 100%; margin-top: -10px;">
         <ul class="questionnaire-nav">
             {#documents}
-            <li><a href="javascript:void(0);" rel="document-{$idx}"><p class="nav-text" >{title}</p></a></li>
+            <li>
+                <a href="javascript:void(0);" rel="document-{$idx}">
+                    <span class="done-questions" >
+                        <img src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
+                    </span>
+                    <span class="not-done-questions" >
+                        <img src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_warning.png" >
+                    </span>
+                    <span class="nav-text" >{title}</span>
+                </a>
+            </li>
             {/documents}
             <div class="clear-fix"></div>
         </ul>

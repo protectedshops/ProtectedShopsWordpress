@@ -14,10 +14,9 @@
 		{#options variableId=id}
 		<div class="choiceDiv">
             <div class="inputDiv">
+                <label for="{variableId}{key}{$idx}">
                 <input id="{variableId}{key}{$idx}" type="radio" rel="radio" class="choice" value="{key}" name="{variableId}" {@eq key=key value=value}checked="true"{/eq}>
-			</div>
-            <div class="labelDiv">
-                <label for="{variableId}{key}{$idx}">{title|s}</label><br/>
+                {title|s}</label><br/>
 			</div>
 		</div>
 		{/options}
@@ -26,10 +25,10 @@
 		{#options variableId=id}
 		<div class="choiceDiv">
             <div class="inputDiv">
+                <label for="{variableId}{key}{$idx}">
                 <input id="{variableId}{key}{$idx}" type="checkbox" rel="checkbox" class="choice" value="{key}" name="{variableId}" {#value}{@eq key=value[$idx] value=key}checked="true"{/eq}{/value}>
-			</div>
-			<div class="labelDiv">
-			<label for="{variableId}{key}{$idx}">{title|s}</label><br/>
+                {title|s}
+                </label><br/>
 			</div>
 		</div>
 		{/options}
