@@ -2,6 +2,10 @@
 
 /*
 Plugin Name: ProtectedShops
+Description: Das Plugin ermöglicht die Zuweisung von ProtectedShops-Modul zu Wordpress-Seite. Also, wenn ein registrierter Benutzer diese Seite besuchen, wird er in der Lage sein, Projekt für dieses Modul zu erstellen, die Frage zu beantworten und die erzeugten Dokumente herunterzuladen.
+Version: 1.0.0
+Author: Protected Shops GmbH
+Author URI: https://protectedshops.de
 */
 
 /*Plugin helpers*/
@@ -90,7 +94,7 @@ function protected_shops_admin_page() {
     $icon_url = '';
     $position = 24;
 
-    add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+    add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
 }
 
 function protectedshops_admin_page_display()
@@ -98,10 +102,14 @@ function protectedshops_admin_page_display()
     global $wpdb;
     $selectPagesSql = "SELECT ID, post_title FROM `wp_posts` WHERE post_status = 'publish';";
     $wpPages = $wpdb->get_results($selectPagesSql);
+
     $protected_shop_settings_table = $wpdb->prefix . 'ps_settings';
-    $module_page_table = $wpdb->prefix . 'ps_module_page';
     $selectSettings = "SELECT * FROM $protected_shop_settings_table LIMIT 1";
     $currentSettings = $wpdb->get_results($selectSettings);
+
+    $module_page_table = $wpdb->prefix . 'ps_module_page';
+    $overtakenPagesSql = "SELECT * FROM $module_page_table";
+    $overtakenPages = $wpdb->get_results($overtakenPagesSql);
 
     if (
         $_POST['partner'] !== NULL
