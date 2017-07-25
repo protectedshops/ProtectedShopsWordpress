@@ -47,13 +47,12 @@ final class DocumentServer
      * @param $url
      * @return mixed
      */
-    public function createProject($module, $title, $url)
+    public function createProject($module, $title)
     {
         $function = 'partners/' . $this->partner .'/shops';
         $data['shop'] = array(
             'module' => $module,
-            'title' => $title,
-            'url' => $url
+            'title' => $title
         );
         $response = $this->apiRequest('POST', $function, $data);
 

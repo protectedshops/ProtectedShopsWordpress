@@ -78,10 +78,13 @@ function activate()
         PRIMARY KEY (ID)
     ) $charset_collate;";
 
+    $sql3_1 = "ALTER TABLE $projects_table DROP COLUMN url;";
+
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta($sql);
     dbDelta($sql2);
     dbDelta($sql3);
+    dbDelta($sql3_1);
 }
 
 
@@ -184,14 +187,13 @@ function protectedshops_frontend_page_init($text)
         } elseif ($_POST['moduleId']) {
             if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
 
-                $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title'], $_POST['url']);
+                $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title']);
                 if (array_key_exists('shopId', $newProject)) {
                     $wpdb->insert(
                         $projects_table,
                         array(
                             'projectId' => $newProject['shopId'],
                             'title' => $newProject['title'],
-                            'url' => $_POST['url'],
                             'moduleId' => $newProject['module'],
                             'bundleId' => $newProject['bundleId'],
                             'partner' => $newProject['partnerId'],

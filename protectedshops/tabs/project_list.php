@@ -39,10 +39,6 @@
             <input type="text" name="title" id="title">
             <br />
             <br />
-            <label for="url">Project URL</label>
-            <input type="text" name="url" id="url">
-            <br />
-            <br />
             <button class="button-large" type="submit">Neues Dokument hinzufügen </button>
         </form>
     </div>
