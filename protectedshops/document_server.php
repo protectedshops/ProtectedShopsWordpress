@@ -44,7 +44,6 @@ final class DocumentServer
     /**
      * @param $module
      * @param $title
-     * @param $url
      * @return mixed
      */
     public function createProject($module, $title)
@@ -111,6 +110,10 @@ final class DocumentServer
         return $response;
     }
 
+    /**
+     * @param $partner
+     * @return mixed
+     */
     public function getProjects($partner)
     {
         $function = "partners/" . $partner . "/shops";
@@ -119,12 +122,50 @@ final class DocumentServer
         return $response;
     }
 
+    /**
+     * @param $partner
+     * @param $projectId
+     * @return mixed
+     */
     public function getProject($partner, $projectId)
     {
         $function = "partners/" . $partner . "/shops/" . $projectId;
         $response = $this->apiRequest('GET', $function);
 
         return $response;
+    }
+
+    /**
+     * @param $apiUrl
+     * @param $partnerId
+     * @param $clientSecret
+     * @return bool
+     */
+    public static function test($apiUrl, $partnerId, $clientSecret)
+    {
+        $data = array(
+            'grant_type' => 'client_credentials',
+            'client_id' => $partnerId,
+            'client_secret' => $clientSecret
+        );
+
+        $dsUrl = '';
+        if (strpos($apiUrl, 'http') == false) {
+            $dsUrl .= 'https://';
+        }
+        $dsUrl .= "$apiUrl/oauth/v2/token";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $dsUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = json_decode(curl_exec($ch), 1);
+
+        //close connection
+        curl_close($ch);
+
+        return is_array($response) && array_key_exists('access_token', $response) ? true : false;
     }
 
     /**
@@ -161,7 +202,11 @@ final class DocumentServer
      */
     private function apiRequest($httpMethod, $apiFunction, $data = null)
     {
-        $dsUrl = "$this->apiUrl/v2.0/de/$apiFunction/format/json";
+        $dsUrl = '';
+        if (strpos($this->apiUrl, 'http') == false) {
+            $dsUrl .= 'https://';
+        }
+        $dsUrl .= "$this->apiUrl/v2.0/de/$apiFunction/format/json";
 
         // Open connection
         $ch = curl_init();
@@ -198,4 +243,3 @@ final class DocumentServer
         return $response;
     }
 }
-

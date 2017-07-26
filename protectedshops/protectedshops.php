@@ -121,8 +121,8 @@ function protectedshops_admin_page_display()
         && $_POST['modules'] !== NULL
         && $_POST['partnerId'] !== NULL
     ) {
-
-        if (!$currentSettings) {
+        $errors = validate_new_settings();
+        if (!$currentSettings && $errors === false) {
             $wpdb->insert(
                 $protected_shop_settings_table,
                 array(
@@ -134,7 +134,7 @@ function protectedshops_admin_page_display()
                 ),
                 array('%s', '%s', '%s', '%s', '%s')
             );
-        } else {
+        } elseif ($errors === false) {
             $wpdb->update(
                 $protected_shop_settings_table,
                 array(

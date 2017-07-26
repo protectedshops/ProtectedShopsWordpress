@@ -74,3 +74,18 @@ function ps_project_change($partner, $project)
 
     $wpdb->query($updateSql);
 }
+
+/**
+ * @return array|bool
+ */
+function validate_new_settings()
+{
+    require_once 'document_server.php';
+    $errors = [];
+
+    if (!DocumentServer::test($_POST['doc_server_url'], $_POST['partnerId'], $_POST['secret'])) {
+        $errors[] = "Ungültige API-URL, Partner-ID, Partner-Name oder Client-Geheimnis.";
+    }
+
+    return empty($errors) ? false : $errors;
+}
