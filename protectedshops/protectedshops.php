@@ -153,6 +153,11 @@ function protectedshops_admin_page_display()
     }
 
     if ($_POST['wordpress_page_id'] !== NULL && $_POST['moduleId'] !== NULL) {
+
+        $wpdb->query(
+            'DELETE FROM ' . $module_page_table . '
+               WHERE wp_post_ID = "' . $_POST['wordpress_page_id'] . '"'
+        );
         $wpdb->insert(
             $module_page_table,
             array(
@@ -180,59 +185,75 @@ function protectedshops_frontend_page_init($text)
     $wpNonce = wp_create_nonce('wp_rest');
     $settings = ps_get_settings();
     $pluginURL = plugin_dir_url(__FILE__);
+    $error = false;
 
     if(is_page($psPage[0]->post_title) && $psPage) {
-        if (!is_user_logged_in()) {
-            include($pluginDir . "tabs/login_first.php");
-        } elseif ($_POST['moduleId']) {
-            if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
+        try {
+            if (!is_user_logged_in()) {
+                include($pluginDir . "tabs/login_first.php");
+            } elseif ($_POST['moduleId']) {
+                if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
 
-                $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title']);
-                if (array_key_exists('shopId', $newProject)) {
-                    $wpdb->insert(
-                        $projects_table,
-                        array(
-                            'projectId' => $newProject['shopId'],
-                            'title' => $newProject['title'],
-                            'moduleId' => $newProject['module'],
-                            'bundleId' => $newProject['bundleId'],
-                            'partner' => $newProject['partnerId'],
-                            'wp_user_ID' => $wpUser->ID
-                        ),
-                        array('%s', '%s', '%s', '%s', '%s', '%s')
-                    );
+                    $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title']);
+                    if (array_key_exists('shopId', $newProject)) {
+                        $wpdb->insert(
+                            $projects_table,
+                            array(
+                                'projectId' => $newProject['shopId'],
+                                'title' => $newProject['title'],
+                                'moduleId' => $newProject['module'],
+                                'bundleId' => $newProject['bundleId'],
+                                'partner' => $newProject['partnerId'],
+                                'wp_user_ID' => $wpUser->ID
+                            ),
+                            array('%s', '%s', '%s', '%s', '%s', '%s')
+                        );
+                    } elseif (array_key_exists('error_description', $newProject)) {
+                        $error = $newProject['error_description'];
+                    }
+
+                    goto LOAD_PAGE;
                 }
-                goto LOAD_PAGE;
-            }
-        } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
-            $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
-            $project = $wpdb->get_results($sqlProject);
-            $remoteProject = json_decode($docServer->getProject($_GET['partner'], $_GET['project']), 1);
+            } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
+                $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
+                $project = $wpdb->get_results($sqlProject);
+                $remoteProject = json_decode($docServer->getProject($_GET['partner'], $_GET['project']), 1);
 
-            if ($remoteProject['answersValid'] == 1 && $remoteProject['hasDraftAnswers'] == 0) {
-                $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
-                include($pluginDir . "tabs/document_list.php");
+                if (array_key_exists('error_description', $remoteProject)) {
+                    $error = $remoteProject['error_description'];
+                }
+
+                if ($remoteProject['answersValid'] == 1 && $remoteProject['hasDraftAnswers'] == 0) {
+                    $documents = json_decode($docServer->getDocuments($_GET['partner'], $_GET['project']), 1);
+                    include($pluginDir . "tabs/document_list.php");
+                } else {
+                    include($pluginDir . "tabs/no_documents.php");
+                }
+
             } else {
-                include($pluginDir . "tabs/no_documents.php");
-            }
+                LOAD_PAGE:
+                if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
+                    $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
+                    $wpdb->query($deleteSql);
+                }
 
-        } else {
-            LOAD_PAGE:
-            if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
-                $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
-                $wpdb->query($deleteSql);
-            }
+                $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND moduleId='" . $psPage[0]->moduleId . "';";
+                $remoteProjects = ps_get_remote_projects($settings[0]->partner);
+                $projects = $wpdb->get_results($sqlProjects);
+                foreach ($projects as $project) {
+                    $project->isValid = is_project_valid($remoteProjects, $project->projectId);
+                }
 
-            $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND moduleId='" . $psPage[0]->moduleId . "';";
-            $remoteProjects = ps_get_remote_projects($settings[0]->partner);
-            $projects = $wpdb->get_results($sqlProjects);
-            foreach ($projects as $project) {
-                $project->isValid = is_project_valid($remoteProjects, $project->projectId);
+                $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
+                include($pluginDir . "tabs/project_list.php");
             }
-
+        } catch (\Exception $e) {
+            $projects = [];
             $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
+            $error = "Ihre Anfrage kann nicht sofort abgewickelt werden";
             include($pluginDir . "tabs/project_list.php");
         }
+
     } else {
         return $text;
     }

@@ -150,7 +150,7 @@ final class DocumentServer
         );
 
         $dsUrl = '';
-        if (strpos($apiUrl, 'http') == false) {
+        if (strpos($apiUrl, 'http') === false) {
             $dsUrl .= 'https://';
         }
         $dsUrl .= "$apiUrl/oauth/v2/token";
@@ -203,7 +203,7 @@ final class DocumentServer
     private function apiRequest($httpMethod, $apiFunction, $data = null)
     {
         $dsUrl = '';
-        if (strpos($this->apiUrl, 'http') == false) {
+        if (strpos($this->apiUrl, 'http') === false) {
             $dsUrl .= 'https://';
         }
         $dsUrl .= "$this->apiUrl/v2.0/de/$apiFunction/format/json";

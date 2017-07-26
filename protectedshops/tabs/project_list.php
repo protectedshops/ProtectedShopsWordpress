@@ -43,6 +43,7 @@
         </form>
     </div>
 </p>
+<?php if ($error) {include 'error.php'; } ?>
 <p>
     <table class="table">
         <tr>

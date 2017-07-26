@@ -21,7 +21,7 @@
 </form>
 
 <?php if ($errors) {?>
-    <ul style="color: red; list-style: hiragana; font-weight: bold;">
+    <ul style="color: red; list-style: none; font-weight: bold;">
         <?php foreach ($errors as $error) {?>
             <li><?php echo $error; ?></li>
         <?php }?>
