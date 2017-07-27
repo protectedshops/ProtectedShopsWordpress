@@ -1,6 +1,6 @@
 <div style="border-bottom: 1px solid lightgray;" class="form question" {@eq key="true" type="boolean" value=hidden}style="display: none;"{/eq}>
 	<h3><p class="question-title">{title}</p></h3>
-	<button class="button-small editQuestionnaire" type="button">({tr.edit})</button>
+	<button class="button-small fusion-button editQuestionnaire" type="button">({tr.edit})</button>
 	<p>{description|s}</p>
 	{#options questionId=id questionType=type}
 		{@eq key="yesno" value=questionType}
@@ -31,7 +31,7 @@
 		{@eq key="checkbox" value=questionType}
 		<div class="choiceDiv checkList">
             <div class="inputDiv">
-                <label class="button-small" for="{questionId}{key}{$idx}">
+                <label class="button-small fusion-button" for="{questionId}{key}{$idx}">
                 <input id="{questionId}{key}{$idx}" type="checkbox" data-questionId="{questionId}" rel="{questionType}" value="{key}" name="{key}" {@eq key="1" value=value}checked="true"{/eq} onclick="handleCheckBoxClicked(this)">
                 {title|s}
                 </label>
@@ -40,9 +40,14 @@
 		{/eq}
 	{/options}
 	<div class="clear-fix"></div>
+    <span class="done-questions" >
+        <img src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
+    </span>
 	<p>{tr.pleaseSelect}</p>
 	{@eq key="checkbox" value=type}
-		<button class="button-small saveQuestionnaire" type="button">{tr.save}</button>
+	    <div class="form-submit">
+		    <button class="button-small fusion-button saveQuestionnaire" type="button">{tr.save}</button>
+        </div>
 	{/eq}
 	<div class="clear-fix"></div>
 </div>

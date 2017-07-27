@@ -1,4 +1,4 @@
-<div class="question-variable {@eq key="true" type="boolean" value=hidden}hidden{/eq}">
+<div class="question-variable form-submit {@eq key="true" type="boolean" value=hidden}hidden{/eq}">
 	<label class="default" for="{id}"><b>{title}</b></label>
 	<div class="description">{description|s}</div>
 	{@eq key="singleline" value=type}

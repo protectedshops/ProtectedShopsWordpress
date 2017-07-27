@@ -13,7 +13,7 @@
       ul.questionnaire-nav>li {
           display: inline;
           float: left;
-          width: 150px;
+          width: auto;
           height: 46px;
           background-color: white;
           margin-left: 3px;
@@ -52,7 +52,7 @@
     }
     .tab-success .done-questions, .not-done-questions{
         display: inline;
-        width: 10%;
+        width: 15px;
         float: left;
     }
     .tab-success .not-done-questions {
@@ -63,6 +63,21 @@
         width: 850%;
         float: left;
     }
+    .questionnaire-section,  .questionnaire-section {
+        float: right;
+    }
+    .question .done-questions, .question .editQuestionnaire, .question .editVariables {
+        display: none;
+    }
+    .question.answered .done-questions {
+        display: inline;
+        float: left;
+    }
+    .question.answered .editQuestionnaire, .question.answered .editVariables {
+        display: inline;
+        float: right;
+    }
+
 </style>
 <script type="text/javascript" src="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script>
@@ -129,16 +144,16 @@
                         {/questions}
 
                         {?variables}
-                        <div class="variables-container">
+                        <div class="form-submit variables-container">
                             <h3><p class="question-title">{tr.pleaseFill}:</p></h3>
-                            <button class="button-small editVariables" type="button">({tr.edit})</button>
+                            <button class="button-small fusion-button editVariables" type="button">({tr.edit})</button>
 
                             {#variables}
                                 {>variable /}
                             {/variables}
 
-                            <div class="questionnaire-error-msg">{tr.pleaseSelect}:</div>
-                            <button class="button-small saveVariables" onClick="checkIfEmpty(event)" type="button">{tr.save}</button>
+                            <div class="form-submit questionnaire-error-msg">{tr.pleaseSelect}:</div>
+                            <button class="button-small fusion-button saveVariables" onClick="checkIfEmpty(event)" type="button">{tr.save}</button>
                             <div class="clear-fix"></div>
                         </div>
                         {/variables}
@@ -148,11 +163,11 @@
                 {/documents}
             </div>
             {! ---- buttons ---- !}
-            <div class="btn-navigations" style="margin: 20px 0 0" >
+            <div class="btn-navigations form-submit" style="margin: 20px 0 0" >
                 <div class="questionnaire-warning-text">{tr.questionaryBottomWarning}</div>
-                <button class="button-large prevDocument inactive" type="button">{tr.back}</button>
-                <button class="button-large nextDocument inactive" type="button">{tr.forward}</button>
-                <button id="submitQuestionnaire" class="button-large inactive" type="button" >{tr.finish}</button>
+                <button class="button-large fusion-button  prevDocument inactive" type="button">{tr.back}</button>
+                <button class="button-large fusion-button nextDocument inactive" type="button">{tr.forward}</button>
+                <button id="submitQuestionnaire" class="button-large fusion-button inactive" type="button" >{tr.finish}</button>
                 <div class="clear-fix"></div>
             </div>
         </form>

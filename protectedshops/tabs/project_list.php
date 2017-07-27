@@ -30,17 +30,19 @@
 </script>
 
 <p>
-    <button id="show_create_project_table_button" class="button-large">Neues Dokument hinzufügen</button>
-    <div id="project_create_form" style="display: none;">
-        <form class="form" method="POST">
-            <input type="hidden" name="moduleId" value="<?php echo $psPage[0]->moduleId; ?>" />
-            <input type="hidden" name="command" value="create_project" />
-            <label for="title">Project title</label>
-            <input type="text" name="title" id="title">
-            <br />
-            <br />
-            <button class="button-large" type="submit">Neues Dokument hinzufügen </button>
-        </form>
+    <div class="form-submit">
+        <button id="show_create_project_table_button" class="fusion-button button-large">Neues Dokument hinzufügen</button>
+        <div id="project_create_form" style="display: none;">
+            <form class="form" method="POST">
+                <input type="hidden" name="moduleId" value="<?php echo $psPage[0]->moduleId; ?>" />
+                <input type="hidden" name="command" value="create_project" />
+                <label for="title">Projekttitel</label>
+                <input type="text" name="title" id="title">
+                <br />
+                <br />
+                <button class="button-large fusion-button" type="submit">Neues Dokument hinzufügen </button>
+            </form>
+        </div>
     </div>
 </p>
 <?php if ($error) {include 'error.php'; } ?>
