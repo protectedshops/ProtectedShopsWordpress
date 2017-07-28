@@ -63,17 +63,17 @@
         width: 850%;
         float: left;
     }
-    .questionnaire-section,  .questionnaire-section {
+    .questionnaire-section .editVariables, .questionnaire-section .editQuestionnaire {
         float: right;
     }
-    .question .done-questions, .question .editQuestionnaire, .question .editVariables {
+    .question .done-questions, .question .editQuestionnaire, .question .editVariables, .editVariables, .answered .select-value, .answered .saveVariables {
         display: none;
     }
-    .question.answered .done-questions {
+    .answered .done-questions {
         display: inline;
         float: left;
     }
-    .question.answered .editQuestionnaire, .question.answered .editVariables {
+    .question.answered .editQuestionnaire, .question.answered .editVariables, .answered .editVariables {
         display: inline;
         float: right;
     }
@@ -144,7 +144,7 @@
                         {/questions}
 
                         {?variables}
-                        <div class="form-submit variables-container">
+                        <div style="padding-bottom: 25px; border-bottom: 2px solid lightgray;" class="form-submit variables-container">
                             <h3><p class="question-title">{tr.pleaseFill}:</p></h3>
                             <button class="button-small fusion-button editVariables" type="button">({tr.edit})</button>
 
@@ -152,9 +152,11 @@
                                 {>variable /}
                             {/variables}
 
-                            <div class="form-submit questionnaire-error-msg">{tr.pleaseSelect}:</div>
                             <button class="button-small fusion-button saveVariables" onClick="checkIfEmpty(event)" type="button">{tr.save}</button>
                             <div class="clear-fix"></div>
+                            <span class="done-questions" >
+                                <img src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
+                            </span>
                         </div>
                         {/variables}
                     </div>

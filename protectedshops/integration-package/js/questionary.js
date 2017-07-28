@@ -622,7 +622,9 @@
 
         function saveAnswer(self) {
             var inputs;
+
             var questionContainer = jQuery(self).parent();
+
             if (hasContainerSelection(questionContainer)) {
                 inputs = jQuery(questionContainer).find('input');
                 jQuery.each(jQuery(inputs), function (key, input) {

@@ -48,7 +48,7 @@ final class DocumentServer
      */
     public function createProject($module, $title)
     {
-        $function = 'partners/' . $this->partner .'/shops';
+        $function = 'partners/' . $this->partner . '/shops';
         $data['shop'] = array(
             'module' => $module,
             'title' => $title
@@ -214,10 +214,9 @@ final class DocumentServer
         curl_setopt($ch, CURLOPT_URL, $dsUrl);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch,CURLOPT_HTTPHEADER, array('Authorization: Bearer ' .  $this->getAccessToken()));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $this->getAccessToken()));
 
-        switch ($httpMethod)
-        {
+        switch ($httpMethod) {
             case "POST":
                 curl_setopt($ch, CURLOPT_POST, 1);
                 break;
