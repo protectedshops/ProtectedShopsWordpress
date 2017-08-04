@@ -1,6 +1,4 @@
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />
+
 <style type="text/css">
 
      ul.questionnaire-nav {
@@ -79,7 +77,6 @@
     }
 
 </style>
-<script type="text/javascript" src="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script>
     function handleCheckBoxClicked(input) {
         if (input.id.search('noneOfTheAbove') > 0) {

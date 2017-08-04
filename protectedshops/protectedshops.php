@@ -17,7 +17,7 @@ add_action('admin_menu', 'protected_shops_admin_page');
 //add_action('wp', 'protectedshops_frontend_page_init');
 add_filter('the_content', 'protectedshops_frontend_page_init');
 add_action('wp_enqueue_scripts', 'add_scripts');
-add_action( 'rest_api_init', function () {
+add_action('rest_api_init', function () {
     register_rest_route( 'protectedshops/v1', '/questionary', array(
         'methods' => 'GET',
         'callback' => 'buildQuestionary',
@@ -34,9 +34,13 @@ add_action( 'rest_api_init', function () {
     ) );
 } );
 
-add_action( 'wp_default_scripts', function( $scripts ) {
-    if ( ! empty( $scripts->registered['jquery'] ) ) {
-        $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
+add_action('wp_default_scripts', function( $scripts) {
+    if (!empty($scripts->registered['jquery']) && !is_admin()) {
+        return;
+    }
+    $psPage = ps_get_page();
+    if(is_page($psPage[0]->post_title) && $psPage && !empty($scripts->registered['jquery'])) {
+        $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array('jquery-migrate'));
     }
 } );
 
@@ -193,7 +197,6 @@ function protectedshops_frontend_page_init($text)
                 include($pluginDir . "tabs/login_first.php");
             } elseif ($_POST['moduleId']) {
                 if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
-
                     $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title']);
                     if (array_key_exists('shopId', $newProject)) {
                         $wpdb->insert(
@@ -266,10 +269,13 @@ function add_scripts()
     wp_register_script('dust', plugins_url('integration-package/js/dust-full.js', __FILE__ ), array( ));
     wp_register_script('dust-helper', plugins_url('integration-package/js/dust-helpers.js', __FILE__ ), array());
 
-    wp_enqueue_script('questionary');
-    wp_enqueue_script('dust_core');
-    wp_enqueue_script('dust');
-    wp_enqueue_script('dust-helper');
+    $psPage = ps_get_page();
+    if (is_page($psPage[0]->post_title)) {
+        wp_enqueue_script('questionary');
+        wp_enqueue_script('dust_core');
+        wp_enqueue_script('dust');
+        wp_enqueue_script('dust-helper');
+    }
 }
 
 function buildQuestionary(WP_REST_Request $request)

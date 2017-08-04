@@ -34,13 +34,13 @@
         <button id="show_create_project_table_button" class="fusion-button button-large">Neues Dokument hinzufügen</button>
         <div id="project_create_form" style="display: none;">
             <form class="form" method="POST">
+                <button class="button-large fusion-button" type="submit">Neues Dokument hinzufügen </button>
+                <br />
+                <br />
                 <input type="hidden" name="moduleId" value="<?php echo $psPage[0]->moduleId; ?>" />
                 <input type="hidden" name="command" value="create_project" />
-                <label for="title">Projekttitel</label>
+                <label for="title">Bitte geben Sie einen Namen für das Projekt an und bestätigen Sie mit der Eingabetaste</label>
                 <input type="text" name="title" id="title">
-                <br />
-                <br />
-                <button class="button-large fusion-button" type="submit">Neues Dokument hinzufügen </button>
             </form>
         </div>
     </div>
