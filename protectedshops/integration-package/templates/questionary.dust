@@ -70,9 +70,20 @@
     .answered .done-questions {
         display: inline;
         float: left;
+        margin-left: 400px;
+    }
+    img.done_icon {
+        width: 10px;
+        height: 10px;
     }
     .question.answered .editQuestionnaire, .question.answered .editVariables, .answered .editVariables {
         display: inline;
+        float: right;
+    }
+    .btn-navigations {
+        float: right;
+    }
+    .btn-navigations button {
         float: right;
     }
 
@@ -142,6 +153,10 @@
 
                         {?variables}
                         <div style="padding-bottom: 25px; border-bottom: 2px solid lightgray;" class="form-submit variables-container">
+                            <span class="done-questions" >
+                                <img class="done_icon" src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
+                            </span>
+                            <br />
                             <h3><p class="question-title">{tr.pleaseFill}:</p></h3>
                             <button class="button-small fusion-button editVariables" type="button">({tr.edit})</button>
 
@@ -151,9 +166,6 @@
 
                             <button class="button-small fusion-button saveVariables" onClick="checkIfEmpty(event)" type="button">{tr.save}</button>
                             <div class="clear-fix"></div>
-                            <span class="done-questions" >
-                                <img src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
-                            </span>
                         </div>
                         {/variables}
                     </div>

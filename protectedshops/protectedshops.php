@@ -244,7 +244,9 @@ function protectedshops_frontend_page_init($text)
                 $remoteProjects = ps_get_remote_projects($settings[0]->partner);
                 $projects = $wpdb->get_results($sqlProjects);
                 foreach ($projects as $project) {
+                    $project->documents = [];
                     $project->isValid = is_project_valid($remoteProjects, $project->projectId);
+                    $project->documents = json_decode($docServer->getDocuments($project->partner, $project->projectId), 1);
                 }
 
                 $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );

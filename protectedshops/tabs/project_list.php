@@ -2,6 +2,7 @@
 <script>
     jQuery(document).ready(function($) {
         $(".generate-questionary").click(function () {
+            var projectId = $(this).data('projectid');
             ps.questionary({
                 container: "#main-questionary",
                 templatePath: "<?php echo $psTemplatesUrl; ?>/",
@@ -16,8 +17,11 @@
                     $('#questionary-holder').show();
                 },
                 onFinish: function () {
-                    $('#documents').show();
-                    $('html,body').animate({scrollTop: $('#documents').offset().top}, 'slow');
+                    var projectDocumentsRow = $('#documents-' + projectId);
+                    projectDocumentsRow.show();
+                    $('html,body').animate({scrollTop: projectDocumentsRow.offset().top - 100}, 'slow');
+                    $('#link-' + projectId).removeClass('unfinished');
+                    $('#td-' + projectId).html('vollständig');
                 }
             });
         });
@@ -25,6 +29,13 @@
         $("#show_create_project_table_button").click(function(){
             $("#show_create_project_table_button").hide();
             $("#project_create_form").show();
+        });
+
+        $('.project-documents').click(function(){
+            if (!$(this).hasClass('unfinished')) {
+                var id = $(this).data('id');
+                $('#' + id).toggle();
+            }
         });
     });
 </script>
@@ -59,12 +70,26 @@
     <?php foreach ($projects as $project) {?>
         <tr>
             <td><?php echo $project->title; ?></td>
-            <td><?php if ($project->isValid) { echo "vollständig"; } else { echo "unvollständig"; }; ?></td>
+            <td id="td-<?php echo $project->projectId; ?>"><?php if ($project->isValid) { echo "vollständig"; } else { echo "unvollständig"; }; ?></td>
             <td><?php echo $project->changed; ?></td>
             <td><a class="generate-questionary" data-url="<?php echo $project->url; ?>" data-partner="<?php echo $project->partner; ?>" data-projectId="<?php echo $project->projectId; ?>" href="#">Fragebogen bearbeiten</a></td>
-            <td><a href="?tab=downloads&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>">Dukumente herunterladen</a></td>
+            <td><a id="link-<?php echo $project->projectId; ?>" class="project-documents <?php if (!$project->isValid) { echo "unfinished"; } ?>" data-id="documents-<?php echo $project->projectId; ?>" href="javascript:void(0)">Dokumente herunterladen</a></td>
             <td><a href="?command=delete_project&project=<?php echo $project->projectId; ?>">(löschen)</a></td>
         </tr>
+            <tr style="display: none;" id="documents-<?php echo $project->projectId; ?>" class="project-documents">
+                <?php foreach ($project->documents['content']['documents'] as $document) { ?>
+                    <td></td>
+                    <td><h3><b><?php echo $document['name']; ?></b></h3></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=docx" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-docx.png"; ?>"></a>
+                        <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=pdf" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-pdf.png"; ?>"></a>
+                        <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=text" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-txt.png"; ?>"></a>
+                    </td>
+                    <td></td>
+                <?php }?>
+            </tr>
     <?php }?>
     </table>
 </p>

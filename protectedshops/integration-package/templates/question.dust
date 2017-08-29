@@ -1,4 +1,8 @@
 <div style="padding-bottom: 25px; border-bottom: 2px solid lightgray;" class="form form-submit question" {@eq key="true" type="boolean" value=hidden}style="display: none;"{/eq}>
+    <span class="done-questions" >
+        <img class="done_icon" src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
+    </span>
+    <br />
 	<h3><p class="question-title">{title}</p></h3>
 	<button class="button-small fusion-button editQuestionnaire" type="button">({tr.edit})</button>
 	<p>{description|s}</p>
@@ -43,9 +47,6 @@
 		{/eq}
 	{/options}
 	<div class="clear-fix"></div>
-    <span class="done-questions" >
-        <img src="/wp-content/plugins/protectedshops/integration-package/images/questionnaire_success.png" >
-    </span>
 	{@eq key="checkbox" value=type}
 		  <button class="button-small fusion-button saveQuestionnaire" type="button">{tr.save}</button>
 	{/eq}
