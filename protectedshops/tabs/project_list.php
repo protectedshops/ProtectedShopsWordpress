@@ -17,7 +17,7 @@
                     $('#questionary-holder').show();
                 },
                 onFinish: function () {
-                    var projectDocumentsRow = $('#documents-' + projectId);
+                    var projectDocumentsRow = $('.documents-' + projectId);
                     projectDocumentsRow.show();
                     $('html,body').animate({scrollTop: projectDocumentsRow.offset().top - 100}, 'slow');
                     $('#link-' + projectId).removeClass('unfinished');
@@ -34,7 +34,7 @@
         $('.project-documents').click(function(){
             if (!$(this).hasClass('unfinished')) {
                 var id = $(this).data('id');
-                $('#' + id).toggle();
+                $('.' + id).toggle();
             }
         });
     });
@@ -76,20 +76,21 @@
             <td><a id="link-<?php echo $project->projectId; ?>" class="project-documents <?php if (!$project->isValid) { echo "unfinished"; } ?>" data-id="documents-<?php echo $project->projectId; ?>" href="javascript:void(0)">Dokumente herunterladen</a></td>
             <td><a href="?command=delete_project&project=<?php echo $project->projectId; ?>">(löschen)</a></td>
         </tr>
-            <tr style="display: none;" id="documents-<?php echo $project->projectId; ?>" class="project-documents">
-                <?php foreach ($project->documents['content']['documents'] as $document) { ?>
-                    <td></td>
-                    <td><h3><b><?php echo $document['name']; ?></b></h3></td>
-                    <td></td>
-                    <td></td>
+        <?php foreach ($project->documents['content']['documents'] as $document) { ?>
+            <tr style="display: none;" class="documents-<?php echo $project->projectId; ?>" class="project-documents">
+                <td></td>
+                <td><h3><b><?php echo $document['name']; ?></b></h3></td>
+                <td></td>
+                <td></td>
                     <td>
-                        <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=docx" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-docx.png"; ?>"></a>
-                        <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=pdf" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-pdf.png"; ?>"></a>
-                        <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=text" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-txt.png"; ?>"></a>
-                    </td>
-                    <td></td>
-                <?php }?>
+                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=docx" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-docx.png"; ?>"></a>
+                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=pdf" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-pdf.png"; ?>"></a>
+                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=text" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-txt.png"; ?>"></a>
+                </td>
+                <td></td>
             </tr>
+        <?php }?>
+
     <?php }?>
     </table>
 </p>
