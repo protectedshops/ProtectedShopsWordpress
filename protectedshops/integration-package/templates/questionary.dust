@@ -81,12 +81,19 @@
         float: right;
     }
     .btn-navigations {
-        float: right;
+        display: block;
+        width: 100%;
     }
-    .btn-navigations button {
+    .btn-navigations .nextDocument, .btn-navigations #submitQuestionnaire {
         float: right;
+        display: inline;
+        width: 25%;
     }
-
+    .btn-navigations .prevDocument {
+        float: left;
+        display: inline;
+        width: 25%;
+    }
 </style>
 <script>
     function handleCheckBoxClicked(input) {

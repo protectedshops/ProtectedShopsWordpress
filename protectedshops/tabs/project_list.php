@@ -10,7 +10,6 @@
                 saveUrl: "/wp-json/protectedshops/v1/questionary/answer?_wpnonce=<?php echo $wpNonce; ?>&partner="+$(this).data('partner')+"&project=" + $(this).data('projectid'),
                 beforeReload: function () {
                     $('#loadingIndicator').show();
-                    $('#questionary-holder').hide();
                 },
                 afterReload: function () {
                     $('#loadingIndicator').hide();
@@ -22,6 +21,7 @@
                     $('html,body').animate({scrollTop: projectDocumentsRow.offset().top - 100}, 'slow');
                     $('#link-' + projectId).removeClass('unfinished');
                     $('#td-' + projectId).html('vollständig');
+                    $('#questionary-holder').hide();
                 }
             });
         });
@@ -78,16 +78,16 @@
         </tr>
         <?php foreach ($project->documents['content']['documents'] as $document) { ?>
             <tr style="display: none;" class="documents-<?php echo $project->projectId; ?>" class="project-documents">
+                <td style="white-space: nowrap;"><h4><b><?php echo $document['name'] . " volstatighen butermuther zieg HELL ffff (DEMO)"; ?></b></h4></td>
                 <td></td>
-                <td><h3><b><?php echo $document['name']; ?></b></h3></td>
                 <td></td>
                 <td></td>
-                    <td>
-                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=docx" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-docx.png"; ?>"></a>
-                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=pdf" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-pdf.png"; ?>"></a>
-                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=text" target="_blank"><img width="24" src="<?php echo $pluginURL . "assets/icons/icon-txt.png"; ?>"></a>
+                <td></td>
+                <td style="white-space: nowrap;">
+                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=docx" target="_blank"><img width="36" src="<?php echo $pluginURL . "assets/icons/icon-docx.png"; ?>"></a>
+                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=pdf" target="_blank"><img width="36" src="<?php echo $pluginURL . "assets/icons/icon-pdf.png"; ?>"></a>
+                    <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=text" target="_blank"><img width="36" src="<?php echo $pluginURL . "assets/icons/icon-txt.png"; ?>"></a>
                 </td>
-                <td></td>
             </tr>
         <?php }?>
 
@@ -96,11 +96,13 @@
 </p>
 
 <section id="questionary">
-
     <div id="questionary-holder" style="display: none; padding: 5px; border: 2px solid #adb6bd;">
         <div id="main-questionary"></div>
     </div>
-    <div style="display: none;" id="loadingIndicator">
-        <img src="<?php echo $pluginURL . "assets/loader.gif"; ?>" />
+    <div id="loadingIndicator" style="display: none; position:fixed; padding:0; margin:0; top:0; left:0; width: 100%; height: 100%; background:rgba(255,255,255,0.5);">
+        <div style="width: 150px; position:fixed; top:50%; left:40%; z-index: 10000;">
+            <img src="<?php echo $pluginURL . "assets/loader.gif"; ?>" />
+        </div>
     </div>
 </section>
+
