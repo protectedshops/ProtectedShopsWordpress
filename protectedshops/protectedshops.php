@@ -39,7 +39,7 @@ add_action('wp_default_scripts', function( $scripts) {
         return;
     }
     $psPage = ps_get_page();
-    if(is_page($psPage[0]->post_title) && $psPage && !empty($scripts->registered['jquery'])) {
+    if(isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage && !empty($scripts->registered['jquery'])) {
         $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array('jquery-migrate'));
     }
 } );
@@ -52,34 +52,36 @@ function activate()
     $protected_shop_settings_table = $wpdb->prefix . 'ps_settings';
     $projects_table = $wpdb->prefix . 'ps_project';
 
-    $sql = "CREATE TABLE IF NOT EXISTS $module_page_table (
+    $sql = "CREATE TABLE $module_page_table (
         ID INT NOT NULL AUTO_INCREMENT,
         wp_post_ID INT NOT NULL,
         moduleId varchar(32) NOT NULL,
         PRIMARY KEY (ID)
     ) $charset_collate;";
 
-    $sql2 = "CREATE TABLE IF NOT EXISTS $protected_shop_settings_table (
-        ID INT NOT NULL AUTO_INCREMENT,
+    $sql2 = "CREATE TABLE $protected_shop_settings_table (
+        ID int(11) NOT NULL AUTO_INCREMENT,
         partner varchar(255) NOT NULL,
         partnerId varchar(255) NOT NULL,
         partnerSecret varchar(255) NOT NULL,
         url varchar(255) NOT NULL,
-        modules TEXT NOT NULL,
-        PRIMARY KEY (ID)
+        modules text NOT NULL,
+        templatePageId int(11) NULL,
+        PRIMARY KEY  (ID)
     ) $charset_collate;";
 
-    $sql3 = "CREATE TABLE IF NOT EXISTS $projects_table (
-        ID INT NOT NULL AUTO_INCREMENT,
+    $sql3 = "CREATE TABLE $projects_table (
+        ID int(11) NOT NULL AUTO_INCREMENT,
         projectId varchar(255) NOT NULL,
         title varchar(255) NOT NULL,
         url varchar(255) NOT NULL,
         moduleId varchar(255) NOT NULL,
-        bundleId INT NOT NULL,
+        bundleId int(11) NOT NULL,
         partner varchar(255) NOT NULL,
-        changed TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        wp_user_ID INT NOT NULL,
-        PRIMARY KEY (ID)
+        changed timestamp DEFAULT CURRENT_TIMESTAMP,
+        wp_user_ID int(11) NOT NULL,
+        templateId varchar(255) NULL,
+        PRIMARY KEY  (ID)
     ) $charset_collate;";
 
     $sql3_1 = "ALTER TABLE $projects_table DROP COLUMN url;";
@@ -134,9 +136,10 @@ function protectedshops_admin_page_display()
                     'partner' => $_POST['partner'],
                     'partnerSecret' => $_POST['secret'],
                     'url' => $_POST['doc_server_url'],
-                    'modules' => $_POST['modules']
+                    'modules' => $_POST['modules'],
+                    'templatePageId' => $_POST['wordpress_page_id_templates']
                 ),
-                array('%s', '%s', '%s', '%s', '%s')
+                array('%s', '%s', '%s', '%s', '%s', '%s')
             );
         } elseif ($errors === false) {
             $wpdb->update(
@@ -146,12 +149,13 @@ function protectedshops_admin_page_display()
                     'partner' => $_POST['partner'],
                     'partnerSecret' => $_POST['secret'],
                     'url' => $_POST['doc_server_url'],
-                    'modules' => $_POST['modules']
+                    'modules' => $_POST['modules'],
+                    'templatePageId' => $_POST['wordpress_page_id_templates']
                 ),
                 array(
                     'ID' => $currentSettings[0]->ID
                 ),
-                array('%s', '%s', '%s', '%s', '%s')
+                array('%s', '%s', '%s', '%s', '%s', '%s')
             );
         }
     }
