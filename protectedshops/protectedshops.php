@@ -55,7 +55,7 @@ function activate()
     $sql = "CREATE TABLE $module_page_table (
         ID INT NOT NULL AUTO_INCREMENT,
         wp_post_ID INT NOT NULL,
-        moduleId varchar(32) NOT NULL,
+        moduleId varchar(255) NOT NULL,
         PRIMARY KEY (ID)
     ) $charset_collate;";
 
