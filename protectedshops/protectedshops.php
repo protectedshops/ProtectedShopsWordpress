@@ -188,6 +188,7 @@ function protectedshops_frontend_page_init($text)
 
     $docServer = ps_document_server();
     $psPage = ps_get_page();
+    $isTemplatesPage = ps_is_templates_page();
     $wpUser = wp_get_current_user();
     /*$wpNonce is used for the plugin API calls so the user can authenticate*/
     $wpNonce = wp_create_nonce('wp_rest');
@@ -195,8 +196,8 @@ function protectedshops_frontend_page_init($text)
     $pluginURL = plugin_dir_url(__FILE__);
     $error = false;
 
-    if(is_page($psPage[0]->post_title) && $psPage) {
-        try {
+    try {
+        if (isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage) {
             if (!is_user_logged_in()) {
                 include($pluginDir . "tabs/login_first.php");
             } elseif ($_POST['moduleId']) {
@@ -222,7 +223,7 @@ function protectedshops_frontend_page_init($text)
                     goto LOAD_PAGE;
                 }
             } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
-                $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
+                $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
                 $project = $wpdb->get_results($sqlProject);
                 $remoteProject = json_decode($docServer->getProject($_GET['partner'], $_GET['project']), 1);
 
@@ -240,7 +241,7 @@ function protectedshops_frontend_page_init($text)
             } else {
                 LOAD_PAGE:
                 if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
-                    $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
+                    $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
                     $wpdb->query($deleteSql);
                 }
 
@@ -253,17 +254,23 @@ function protectedshops_frontend_page_init($text)
                     $project->documents = json_decode($docServer->getDocuments($project->partner, $project->projectId), 1);
                 }
 
-                $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
+                $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__);
                 include($pluginDir . "tabs/project_list.php");
             }
-        } catch (\Exception $e) {
-            $projects = [];
-            $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
-            $error = "Ihre Anfrage kann nicht sofort abgewickelt werden";
-            include($pluginDir . "tabs/project_list.php");
+
+
+        } elseif ($isTemplatesPage) {
+            $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
+            include($pluginDir . "tabs/template_list.php");
+        } else {
+            return $text;
         }
 
-    } else {
+    } catch (\Exception $e) {
+        $projects = [];
+        $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__);
+        $error = "Ihre Anfrage kann nicht sofort abgewickelt werden";
+        include($pluginDir . "tabs/project_list.php");
         return $text;
     }
 }
@@ -276,7 +283,7 @@ function add_scripts()
     wp_register_script('dust-helper', plugins_url('integration-package/js/dust-helpers.js', __FILE__ ), array());
 
     $psPage = ps_get_page();
-    if (is_page($psPage[0]->post_title)) {
+    if (isset($psPage[0]) && is_page($psPage[0]->post_title)) {
         wp_enqueue_script('questionary');
         wp_enqueue_script('dust_core');
         wp_enqueue_script('dust');

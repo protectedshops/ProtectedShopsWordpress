@@ -99,9 +99,9 @@ final class DocumentServer
      * @param $moduleKey
      * @return mixed
      */
-    public function getTemplates($moduleKey)
+    public function getTemplates($partner, $moduleKey)
     {
-        $function = "templates/module/" . $moduleKey;
+        $function = "partners/" . $partner . "/templates/module/" . $moduleKey;
 
         return $this->apiRequest('GET', $function);
     }

@@ -35,6 +35,13 @@ function ps_get_page()
     return $wpdb->get_results($selectPagesSql);
 }
 
+function ps_is_templates_page()
+{
+    $settings = ps_get_settings();
+
+    return (isset($settings[0]) && $settings[0]->templatePageId == get_the_ID());
+}
+
 function ps_is_project_access_allowed($projectId, $userId)
 {
     global $wpdb;
