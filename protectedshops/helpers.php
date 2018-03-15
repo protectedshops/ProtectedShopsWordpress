@@ -82,6 +82,41 @@ function ps_project_change($partner, $project)
     $wpdb->query($updateSql);
 }
 
+function ps_create_project($moduleId, $title, $templateId = null)
+{
+    global $wpdb;
+    $wpUser = wp_get_current_user();
+    $projects_table = $wpdb->prefix . 'ps_project';
+    $success = false;
+    $error = '';
+
+    $docServer = ps_document_server();
+    $newProject = $docServer->createProject($moduleId, $title);
+    if (array_key_exists('shopId', $newProject)) {
+        $wpdb->insert(
+            $projects_table,
+            array(
+                'projectId' => $newProject['shopId'],
+                'title' => $newProject['title'],
+                'moduleId' => $newProject['module'],
+                'bundleId' => $newProject['bundleId'],
+                'partner' => $newProject['partnerId'],
+                'wp_user_ID' => $wpUser->ID,
+                'templateId' => $templateId
+            ),
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+        );
+        $success = true;
+    } elseif (array_key_exists('error_description', $newProject)) {
+        $error = $newProject['error_description'];
+    }
+
+    return array(
+        'success' => $success,
+        'error' => $error
+    );
+}
+
 /**
  * @return array|bool
  */

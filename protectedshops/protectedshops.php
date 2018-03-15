@@ -197,27 +197,35 @@ function protectedshops_frontend_page_init($text)
     $error = false;
 
     try {
+        if (array_key_exists('command', $_POST) && 'create_projects_from_templates' == $_POST['command']) {
+            $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
+            $templateIds = $_POST['templateIds'];
+            $errors = [];
+            foreach ($templateIds as $templateId => $val) {
+                $title = '';
+                foreach ($templates as $template) {
+                    if ($template['id'] == $templateId) {
+                        $title = $template['title'];
+                    }
+                }
+                $result = ps_create_project($_POST['moduleId'], $title, $templateId);
+                if (!$result['success']) {
+                    $errors[] = $result['error'];
+                }
+            }
+            if (!empty($errors)) {
+                $error = join('<br />', $errors);
+            }
+        }
+
         if (isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage) {
             if (!is_user_logged_in()) {
                 include($pluginDir . "tabs/login_first.php");
             } elseif ($_POST['moduleId']) {
                 if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
-                    $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title']);
-                    if (array_key_exists('shopId', $newProject)) {
-                        $wpdb->insert(
-                            $projects_table,
-                            array(
-                                'projectId' => $newProject['shopId'],
-                                'title' => $newProject['title'],
-                                'moduleId' => $newProject['module'],
-                                'bundleId' => $newProject['bundleId'],
-                                'partner' => $newProject['partnerId'],
-                                'wp_user_ID' => $wpUser->ID
-                            ),
-                            array('%s', '%s', '%s', '%s', '%s', '%s')
-                        );
-                    } elseif (array_key_exists('error_description', $newProject)) {
-                        $error = $newProject['error_description'];
+                    $result = ps_create_project($_POST['moduleId'], $_POST['title']);
+                    if (! $result['success']) {
+                        $error = $result['error'];
                     }
 
                     goto LOAD_PAGE;
@@ -261,6 +269,7 @@ function protectedshops_frontend_page_init($text)
 
         } elseif ($isTemplatesPage) {
             $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
+            $usedTemplateIds = $wpdb->get_col("SELECT templateId FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND templateId IS NOT NULL");
             include($pluginDir . "tabs/template_list.php");
         } else {
             return $text;

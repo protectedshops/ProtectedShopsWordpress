@@ -44,15 +44,20 @@ final class DocumentServer
     /**
      * @param $module
      * @param $title
+     * @param $templateId
      * @return mixed
      */
-    public function createProject($module, $title)
+    public function createProject($module, $title, $templateId = null)
     {
         $function = 'partners/' . $this->partner . '/shops';
         $data['shop'] = array(
             'module' => $module,
             'title' => $title
         );
+        if ($templateId) {
+            $data['shop']['templateId'] = $templateId;
+        }
+
         $response = $this->apiRequest('POST', $function, $data);
 
         return json_decode($response, 1);
