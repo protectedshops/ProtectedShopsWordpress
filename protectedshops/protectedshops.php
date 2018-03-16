@@ -221,7 +221,7 @@ function protectedshops_frontend_page_init($text)
         if (isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage) {
             if (!is_user_logged_in()) {
                 include($pluginDir . "tabs/login_first.php");
-            } elseif ($_POST['moduleId']) {
+            } elseif (isset($_POST['moduleId'])) {
                 if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
                     $result = ps_create_project($_POST['moduleId'], $_POST['title']);
                     if (! $result['success']) {
@@ -254,8 +254,14 @@ function protectedshops_frontend_page_init($text)
                 }
 
                 $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND moduleId='" . $psPage[0]->moduleId . "';";
-                $remoteProjects = ps_get_remote_projects($settings[0]->partner);
                 $projects = $wpdb->get_results($sqlProjects);
+                $shopIds = array();
+                foreach ($projects as $project) {
+                    $shopIds[] = $project->projectId;
+                }
+
+                $remoteProjects = ps_get_remote_projects($settings[0]->partner, $shopIds);
+
                 foreach ($projects as $project) {
                     $project->documents = [];
                     $project->isValid = is_project_valid($remoteProjects, $project->projectId);

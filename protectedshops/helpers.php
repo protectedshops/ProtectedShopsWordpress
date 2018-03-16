@@ -53,10 +53,10 @@ function ps_is_project_access_allowed($projectId, $userId)
     return $result[0]->logged == '1' ? true : false;
 }
 
-function ps_get_remote_projects($partner)
+function ps_get_remote_projects($partner, $shopIds = array())
 {
     $docServer = ps_document_server();
-    $projects = json_decode($docServer->getProjects($partner), 1);
+    $projects = json_decode($docServer->getProjects($partner, $shopIds), 1);
 
     return $projects;
 }

@@ -130,10 +130,14 @@ final class DocumentServer
      * @param $partner
      * @return mixed
      */
-    public function getProjects($partner)
+    public function getProjects($partner, $shopIds = array())
     {
         $function = "partners/" . $partner . "/shops";
-        $response = $this->apiRequest('GET', $function);
+        $data = null;
+        if (!empty($shopIds)) {
+            $data = array('shopIds' => $shopIds);
+        }
+        $response = $this->apiRequest('GET', $function, $data);
 
         return $response;
     }
@@ -246,7 +250,11 @@ final class DocumentServer
 
         //set post data
         if ($data) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            if ($httpMethod == 'GET') {
+                curl_setopt($ch, CURLOPT_URL, $dsUrl . '?' . http_build_query($data));
+            } else {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            }
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
