@@ -35,6 +35,13 @@ function ps_get_page()
     return $wpdb->get_results($selectPagesSql);
 }
 
+function ps_is_templates_page()
+{
+    $settings = ps_get_settings();
+
+    return (isset($settings[0]) && $settings[0]->templatePageId == get_the_ID());
+}
+
 function ps_is_project_access_allowed($projectId, $userId)
 {
     global $wpdb;
@@ -46,10 +53,10 @@ function ps_is_project_access_allowed($projectId, $userId)
     return $result[0]->logged == '1' ? true : false;
 }
 
-function ps_get_remote_projects($partner)
+function ps_get_remote_projects($partner, $shopIds = array())
 {
     $docServer = ps_document_server();
-    $projects = json_decode($docServer->getProjects($partner), 1);
+    $projects = json_decode($docServer->getProjects($partner, $shopIds), 1);
 
     return $projects;
 }
@@ -73,6 +80,41 @@ function ps_project_change($partner, $project)
     $updateSql = "UPDATE $projects_table SET changed=NOW() WHERE partner='" . sanitize_text_field($partner) . "' AND projectId='" . sanitize_text_field($project) . "';";
 
     $wpdb->query($updateSql);
+}
+
+function ps_create_project($moduleId, $title, $templateId = null)
+{
+    global $wpdb;
+    $wpUser = wp_get_current_user();
+    $projects_table = $wpdb->prefix . 'ps_project';
+    $success = false;
+    $error = '';
+
+    $docServer = ps_document_server();
+    $newProject = $docServer->createProject($moduleId, $title);
+    if (array_key_exists('shopId', $newProject)) {
+        $wpdb->insert(
+            $projects_table,
+            array(
+                'projectId' => $newProject['shopId'],
+                'title' => $newProject['title'],
+                'moduleId' => $newProject['module'],
+                'bundleId' => $newProject['bundleId'],
+                'partner' => $newProject['partnerId'],
+                'wp_user_ID' => $wpUser->ID,
+                'templateId' => $templateId
+            ),
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+        );
+        $success = true;
+    } elseif (array_key_exists('error_description', $newProject)) {
+        $error = $newProject['error_description'];
+    }
+
+    return array(
+        'success' => $success,
+        'error' => $error
+    );
 }
 
 /**

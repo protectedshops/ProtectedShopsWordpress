@@ -44,15 +44,20 @@ final class DocumentServer
     /**
      * @param $module
      * @param $title
+     * @param $templateId
      * @return mixed
      */
-    public function createProject($module, $title)
+    public function createProject($module, $title, $templateId = null)
     {
         $function = 'partners/' . $this->partner . '/shops';
         $data['shop'] = array(
             'module' => $module,
             'title' => $title
         );
+        if ($templateId) {
+            $data['shop']['templateId'] = $templateId;
+        }
+
         $response = $this->apiRequest('POST', $function, $data);
 
         return json_decode($response, 1);
@@ -96,6 +101,17 @@ final class DocumentServer
     }
 
     /**
+     * @param $moduleKey
+     * @return mixed
+     */
+    public function getTemplates($partner, $moduleKey)
+    {
+        $function = "partners/" . $partner . "/templates/module/" . $moduleKey;
+
+        return $this->apiRequest('GET', $function);
+    }
+
+    /**
      * @param $partner
      * @param $projectId
      * @param $docType
@@ -114,10 +130,14 @@ final class DocumentServer
      * @param $partner
      * @return mixed
      */
-    public function getProjects($partner)
+    public function getProjects($partner, $shopIds = array())
     {
         $function = "partners/" . $partner . "/shops";
-        $response = $this->apiRequest('GET', $function);
+        $data = null;
+        if (!empty($shopIds)) {
+            $data = array('shopIds' => $shopIds);
+        }
+        $response = $this->apiRequest('GET', $function, $data);
 
         return $response;
     }
@@ -230,7 +250,11 @@ final class DocumentServer
 
         //set post data
         if ($data) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            if ($httpMethod == 'GET') {
+                curl_setopt($ch, CURLOPT_URL, $dsUrl . '?' . http_build_query($data));
+            } else {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            }
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

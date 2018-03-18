@@ -39,7 +39,7 @@ add_action('wp_default_scripts', function( $scripts) {
         return;
     }
     $psPage = ps_get_page();
-    if(is_page($psPage[0]->post_title) && $psPage && !empty($scripts->registered['jquery'])) {
+    if(isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage && !empty($scripts->registered['jquery'])) {
         $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array('jquery-migrate'));
     }
 } );
@@ -52,34 +52,36 @@ function activate()
     $protected_shop_settings_table = $wpdb->prefix . 'ps_settings';
     $projects_table = $wpdb->prefix . 'ps_project';
 
-    $sql = "CREATE TABLE IF NOT EXISTS $module_page_table (
+    $sql = "CREATE TABLE $module_page_table (
         ID INT NOT NULL AUTO_INCREMENT,
         wp_post_ID INT NOT NULL,
-        moduleId varchar(32) NOT NULL,
+        moduleId varchar(255) NOT NULL,
         PRIMARY KEY (ID)
     ) $charset_collate;";
 
-    $sql2 = "CREATE TABLE IF NOT EXISTS $protected_shop_settings_table (
-        ID INT NOT NULL AUTO_INCREMENT,
+    $sql2 = "CREATE TABLE $protected_shop_settings_table (
+        ID int(11) NOT NULL AUTO_INCREMENT,
         partner varchar(255) NOT NULL,
         partnerId varchar(255) NOT NULL,
         partnerSecret varchar(255) NOT NULL,
         url varchar(255) NOT NULL,
-        modules TEXT NOT NULL,
-        PRIMARY KEY (ID)
+        modules text NOT NULL,
+        templatePageId int(11) NULL,
+        PRIMARY KEY  (ID)
     ) $charset_collate;";
 
-    $sql3 = "CREATE TABLE IF NOT EXISTS $projects_table (
-        ID INT NOT NULL AUTO_INCREMENT,
+    $sql3 = "CREATE TABLE $projects_table (
+        ID int(11) NOT NULL AUTO_INCREMENT,
         projectId varchar(255) NOT NULL,
         title varchar(255) NOT NULL,
         url varchar(255) NOT NULL,
         moduleId varchar(255) NOT NULL,
-        bundleId INT NOT NULL,
+        bundleId int(11) NOT NULL,
         partner varchar(255) NOT NULL,
-        changed TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        wp_user_ID INT NOT NULL,
-        PRIMARY KEY (ID)
+        changed timestamp DEFAULT CURRENT_TIMESTAMP,
+        wp_user_ID int(11) NOT NULL,
+        templateId varchar(255) NULL,
+        PRIMARY KEY  (ID)
     ) $charset_collate;";
 
     $sql3_1 = "ALTER TABLE $projects_table DROP COLUMN url;";
@@ -134,9 +136,10 @@ function protectedshops_admin_page_display()
                     'partner' => $_POST['partner'],
                     'partnerSecret' => $_POST['secret'],
                     'url' => $_POST['doc_server_url'],
-                    'modules' => $_POST['modules']
+                    'modules' => $_POST['modules'],
+                    'templatePageId' => $_POST['wordpress_page_id_templates']
                 ),
-                array('%s', '%s', '%s', '%s', '%s')
+                array('%s', '%s', '%s', '%s', '%s', '%s')
             );
         } elseif ($errors === false) {
             $wpdb->update(
@@ -146,12 +149,13 @@ function protectedshops_admin_page_display()
                     'partner' => $_POST['partner'],
                     'partnerSecret' => $_POST['secret'],
                     'url' => $_POST['doc_server_url'],
-                    'modules' => $_POST['modules']
+                    'modules' => $_POST['modules'],
+                    'templatePageId' => $_POST['wordpress_page_id_templates']
                 ),
                 array(
                     'ID' => $currentSettings[0]->ID
                 ),
-                array('%s', '%s', '%s', '%s', '%s')
+                array('%s', '%s', '%s', '%s', '%s', '%s')
             );
         }
     }
@@ -184,6 +188,7 @@ function protectedshops_frontend_page_init($text)
 
     $docServer = ps_document_server();
     $psPage = ps_get_page();
+    $isTemplatesPage = ps_is_templates_page();
     $wpUser = wp_get_current_user();
     /*$wpNonce is used for the plugin API calls so the user can authenticate*/
     $wpNonce = wp_create_nonce('wp_rest');
@@ -191,34 +196,42 @@ function protectedshops_frontend_page_init($text)
     $pluginURL = plugin_dir_url(__FILE__);
     $error = false;
 
-    if(is_page($psPage[0]->post_title) && $psPage) {
-        try {
+    try {
+        if (array_key_exists('command', $_POST) && 'create_projects_from_templates' == $_POST['command']) {
+            $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
+            $templateIds = $_POST['templateIds'];
+            $errors = [];
+            foreach ($templateIds as $templateId => $val) {
+                $title = '';
+                foreach ($templates as $template) {
+                    if ($template['id'] == $templateId) {
+                        $title = $template['title'];
+                    }
+                }
+                $result = ps_create_project($_POST['moduleId'], $title, $templateId);
+                if (!$result['success']) {
+                    $errors[] = $result['error'];
+                }
+            }
+            if (!empty($errors)) {
+                $error = join('<br />', $errors);
+            }
+        }
+
+        if (isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage) {
             if (!is_user_logged_in()) {
                 include($pluginDir . "tabs/login_first.php");
-            } elseif ($_POST['moduleId']) {
+            } elseif (isset($_POST['moduleId'])) {
                 if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
-                    $newProject = $docServer->createProject($_POST['moduleId'], $_POST['title']);
-                    if (array_key_exists('shopId', $newProject)) {
-                        $wpdb->insert(
-                            $projects_table,
-                            array(
-                                'projectId' => $newProject['shopId'],
-                                'title' => $newProject['title'],
-                                'moduleId' => $newProject['module'],
-                                'bundleId' => $newProject['bundleId'],
-                                'partner' => $newProject['partnerId'],
-                                'wp_user_ID' => $wpUser->ID
-                            ),
-                            array('%s', '%s', '%s', '%s', '%s', '%s')
-                        );
-                    } elseif (array_key_exists('error_description', $newProject)) {
-                        $error = $newProject['error_description'];
+                    $result = ps_create_project($_POST['moduleId'], $_POST['title']);
+                    if (! $result['success']) {
+                        $error = $result['error'];
                     }
 
                     goto LOAD_PAGE;
                 }
             } elseif (array_key_exists('tab', $_GET) && 'downloads' == $_GET['tab']) {
-                $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
+                $sqlProject = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
                 $project = $wpdb->get_results($sqlProject);
                 $remoteProject = json_decode($docServer->getProject($_GET['partner'], $_GET['project']), 1);
 
@@ -236,30 +249,43 @@ function protectedshops_frontend_page_init($text)
             } else {
                 LOAD_PAGE:
                 if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
-                    $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) ."';";
+                    $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
                     $wpdb->query($deleteSql);
                 }
 
                 $sqlProjects = "SELECT * FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND moduleId='" . $psPage[0]->moduleId . "';";
-                $remoteProjects = ps_get_remote_projects($settings[0]->partner);
                 $projects = $wpdb->get_results($sqlProjects);
+                $shopIds = array();
+                foreach ($projects as $project) {
+                    $shopIds[] = $project->projectId;
+                }
+
+                $remoteProjects = ps_get_remote_projects($settings[0]->partner, $shopIds);
+
                 foreach ($projects as $project) {
                     $project->documents = [];
                     $project->isValid = is_project_valid($remoteProjects, $project->projectId);
                     $project->documents = json_decode($docServer->getDocuments($project->partner, $project->projectId), 1);
                 }
 
-                $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
+                $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__);
                 include($pluginDir . "tabs/project_list.php");
             }
-        } catch (\Exception $e) {
-            $projects = [];
-            $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__ );
-            $error = "Ihre Anfrage kann nicht sofort abgewickelt werden";
-            include($pluginDir . "tabs/project_list.php");
+
+
+        } elseif ($isTemplatesPage) {
+            $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
+            $usedTemplateIds = $wpdb->get_col("SELECT templateId FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND templateId IS NOT NULL");
+            include($pluginDir . "tabs/template_list.php");
+        } else {
+            return $text;
         }
 
-    } else {
+    } catch (\Exception $e) {
+        $projects = [];
+        $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__);
+        $error = "Ihre Anfrage kann nicht sofort abgewickelt werden";
+        include($pluginDir . "tabs/project_list.php");
         return $text;
     }
 }
@@ -272,7 +298,7 @@ function add_scripts()
     wp_register_script('dust-helper', plugins_url('integration-package/js/dust-helpers.js', __FILE__ ), array());
 
     $psPage = ps_get_page();
-    if (is_page($psPage[0]->post_title)) {
+    if (isset($psPage[0]) && is_page($psPage[0]->post_title)) {
         wp_enqueue_script('questionary');
         wp_enqueue_script('dust_core');
         wp_enqueue_script('dust');

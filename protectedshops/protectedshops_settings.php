@@ -16,6 +16,13 @@
     <label for="modules">Verfügbare Partnermodule: (Modul1, Modul2, Modul3)</label>
     <input type="text" name="modules" id="modules" required="required" value="<?php if ($currentSettings[0]->modules) {echo $currentSettings[0]->modules; }?>">
     <br />
+    <label for="wordpress_page_id_templates">Wählen Sie die Seite für die Vorlagenliste</label>
+    <select name="wordpress_page_id_templates" id="wordpress_page_id_templates" required="required">
+        <?php foreach ($wpPages as $page) {?>
+            <option  value="<?php echo $page->ID; ?>" <?php if ($currentSettings[0]->templatePageId == $page->ID) echo 'selected';?> ><?php echo $page->post_title; ?></option>
+        <?php } ?>
+    </select>
+    <br />
 
     <input type="submit" value="Save" class="button button-primary button-large">
 </form>
