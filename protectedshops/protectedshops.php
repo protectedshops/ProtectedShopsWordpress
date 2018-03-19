@@ -197,7 +197,7 @@ function protectedshops_frontend_page_init($text)
     $error = false;
 
     try {
-        if (array_key_exists('command', $_POST) && 'create_projects_from_templates' == $_POST['command']) {
+        if (isset($_POST['command']) && 'create_projects_from_templates' == $_POST['command']) {
             $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
             $templateIds = $_POST['templateIds'];
             $errors = [];
@@ -271,12 +271,23 @@ function protectedshops_frontend_page_init($text)
                 $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__);
                 include($pluginDir . "tabs/project_list.php");
             }
-
-
         } elseif ($isTemplatesPage) {
-            $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
-            $usedTemplateIds = $wpdb->get_col("SELECT templateId FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND templateId IS NOT NULL");
-            include($pluginDir . "tabs/template_list.php");
+            if (!is_user_logged_in()) {
+                include($pluginDir . "tabs/login_first.php");
+            } else {
+                $templates = json_decode($docServer->getTemplates($settings[0]->partner, 'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
+                $groups = [];
+                foreach ($templates as $template) {
+                    $groupName = $template['group'];
+                    if (!isset($groups[$groupName])) {
+                        $groups[$groupName] = array();
+                    }
+                    $groups[$groupName][] = $template;
+                }
+
+                $usedTemplateIds = $wpdb->get_col("SELECT templateId FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND templateId IS NOT NULL");
+                include($pluginDir . "tabs/template_list.php");
+            }
         } else {
             return $text;
         }
@@ -304,6 +315,15 @@ function add_scripts()
         wp_enqueue_script('dust');
         wp_enqueue_script('dust-helper');
     }
+
+    wp_enqueue_script('jquery');
+    wp_register_script('google-jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array('jquery'));
+    wp_register_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css', true);
+    wp_register_style('template-style', 'http://www.frontporchdeals.com/wordpress/wp-includes/js/jqueryui/css/ui-lightness/jquery-ui-1.12.1.custom.css', true);
+    wp_enqueue_style('jquery-style');
+    wp_enqueue_style('jquery-template');
+    wp_enqueue_script('google-jquery-ui');
+    wp_enqueue_script('jquery-template');
 }
 
 function buildQuestionary(WP_REST_Request $request)
