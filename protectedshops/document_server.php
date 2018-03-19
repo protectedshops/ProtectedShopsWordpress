@@ -85,7 +85,7 @@ final class DocumentServer
     {
         $function = "partners/" . $partner . "/shops/" . $projectId . "/answers";
 
-        return $this->apiRequest('GET', $function, array('answers' => $answers));
+        return $this->apiRequest('POST', $function, array('answers' => $answers));
     }
 
     /**
