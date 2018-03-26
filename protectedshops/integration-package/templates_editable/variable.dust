@@ -36,7 +36,7 @@
         {/eq}
         {@eq key="checkbox" value=type}
             {#options variableId=id}
-            <div class="choiceDiv checkList">
+            <div class="choiceDiv">
                 <div class="inputDiv">
                     <input class="choice-{variableId}{$idx}" id="{variableId}{key}{$idx}" type="checkbox" rel="checkbox" class="choice" value="{key}" name="{variableId}" {#value}{@eq key=value[$idx] value=key}checked="true"{/eq}{/value}>
                     <span data-holder-id=".varholder-{variableId}" data-id=".choice-{variableId}{$idx}" class="chekcboxMark"></span>
@@ -52,17 +52,16 @@
             <input type="text" name="{id}" id="{id}" class="questionnaire-date input-tooltip" rel="date" value="{value}"/>
         {/eq}
         {@eq key="bulletpoint" value=type}
-            <div class="bulletPointVar bulletPoint-{id}">
+            <div class="bulletPointVar">
                 <input type="hidden" name="{id}" id="{id}" class="questionnaire-bullet-point" rel="date" value="{value}"/>
 
                 <div class="description">
                     <ul id="{id}-bullet-list" data-variableid={id} class="bullet-point-list">
                         {value|s}
                     </ul>
-                    sadsad ddd
                 </div>
-                <input {?value}style="display: none;"{/value} type="text" id="{id}-bullet-point-entry" class="bullet-point-entry" value="{?value}{tr.addNewBulletPointEntry}{/value}" />
-                <br />
+                    <input {?value}style="display: none;"{/value} type="text" id="{id}-bullet-point-entry" class="bullet-point-entry" value="{?value}{tr.addNewBulletPointEntry}{/value}" />
+                    <br />
                 <div class="description bulletPointsButtons" {?value}style="display: none;"{/value}>
                     <button class="add-bullet-point-entry" data-varId="{id}">{tr.addNew}</button>
                 </div>

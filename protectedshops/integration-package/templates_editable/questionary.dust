@@ -1,9 +1,8 @@
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />
-<link rel="stylesheet" type="text/css" href="/wp-content/plugins/protectedshops/integration-package/css/default.css" />
+<link rel="stylesheet" type="text/css" href="/questionary/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/questionary/integration-package/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" />
+<link rel="stylesheet" type="text/css" href="/questionary/integration-package/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" />
 
-<script type="text/javascript" src="/wp-content/plugins/protectedshops/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/questionary/integration-package/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script>
     function handleCheckBoxClicked(input) {
         if (input.id.search('noneOfTheAbove') > 0) {
@@ -29,98 +28,98 @@
         }
     }
 
- jQuery(function() {
+ $(function() {
 
-        jQuery('.bullet-point-list li').each(function() {
+        $('.bullet-point-list li').each(function() {
             var newBulletPointItem = "<span> <b>(X)</b></span>";
-            jQuery(this).append(newBulletPointItem);
+            $(this).append(newBulletPointItem);
         });
 
-        jQuery('.bullet-point-list span').click(function() {
-            var id = jQuery(this).parent().parent().data('variableid');
-            if (!jQuery('#' + id + '-bullet-point-entry').is(':visible')) {
+        $('.bullet-point-list span').click(function() {
+            var id = $(this).parent().parent().data('variableid');
+            if (!$('#' + id + '-bullet-point-entry').is(':visible')) {
                 return;
             }
-            jQuery(this).parent().remove();
+            $(this).parent().remove();
 
-            var variableValue = jQuery("#" + id + "-bullet-list").html();
-            for (var i = 0; i < jQuery("#" + id + "-bullet-list").find('li').length; i++) {
+            var variableValue = $("#" + id + "-bullet-list").html();
+            for (var i = 0; i < $("#" + id + "-bullet-list").find('li').length; i++) {
                 variableValue = variableValue.replace('<span> <b>(X)</b></span>', "");
             }
 
-            jQuery('#' + id).val(variableValue);
+            $('#' + id).val(variableValue);
         });
 
-       jQuery('.add-bullet-point-entry').click(function(e){
-          e.preventDefault();
-          var id = jQuery(this).data('varid');
-          var bulletPointValue = jQuery('#' + id + '-bullet-point-entry').val();
-          jQuery('#' + id + '-bullet-point-entry').val('');
+      $('.add-bullet-point-entry').click(function(e){
+                e.preventDefault();
+                var id = $(this).data('varid');
+                var bulletPointValue = $('#' + id + '-bullet-point-entry').val();
+                $('#' + id + '-bullet-point-entry').val('');
 
-          var newBulletPointItem = "<li>" + bulletPointValue + "<span> <b>(X)</b></span></li>";
-          jQuery("#" + id + "-bullet-list").append(newBulletPointItem);
+                var newBulletPointItem = "<li>" + bulletPointValue + "<span> <b>(X)</b></span></li>";
+                $("#" + id + "-bullet-list").append(newBulletPointItem);
 
-            var variableValue = jQuery("#" + id + "-bullet-list").html();
-            for (var i = 0; i < jQuery("#" + id + "-bullet-list").find('li').length; i++) {
-                variableValue = variableValue.replace('<span> <b>(X)</b></span>', "");
-            }
+                  var variableValue = $("#" + id + "-bullet-list").html();
+                  for (var i = 0; i < $("#" + id + "-bullet-list").find('li').length; i++) {
+                      variableValue = variableValue.replace('<span> <b>(X)</b></span>', "");
+                  }
 
-            jQuery('#' + id).val(variableValue);
+                  $('#' + id).val(variableValue);
 
-            jQuery('.bullet-point-list span').unbind('click');
+                  $('.bullet-point-list span').unbind('click');
 
-            jQuery('.bullet-point-list span').click(function() {
-                var id = jQuery(this).parent().parent().data('variableid');
+                  $('.bullet-point-list span').click(function() {
+                      var id = $(this).parent().parent().data('variableid');
 
-                jQuery(this).parent().remove();
-                var variableValue = jQuery("#" + id + "-bullet-list").html();
-                for (var i = 0; i < jQuery("#" + id + "-bullet-list").find('li').length; i++) {
-                    variableValue = variableValue.replace('<span> <b>(X)</b></span>', "");
-                }
+                      $(this).parent().remove();
+                      var variableValue = $("#" + id + "-bullet-list").html();
+                      for (var i = 0; i < $("#" + id + "-bullet-list").find('li').length; i++) {
+                          variableValue = variableValue.replace('<span> <b>(X)</b></span>', "");
+                      }
 
 
-                jQuery('#' + id).val(variableValue);
-            });
-       });
+                      $('#' + id).val(variableValue);
+                  });
+             });
 
-      jQuery('.saveVariables').click(function(e){
-         var bulletPointHolder = jQuery(jQuery(this).data('holderidentificator'));
+      $('.saveVariables').click(function(e){
+         var bulletPointHolder = $($(this).data('holderidentificator'));
          bulletPointHolder.find('.bullet-point-entry').remove();
       });
 
-        jQuery('.editVariables').click(function(e){
-            var bulletPointHolder = jQuery(jQuery(this).data('holderidentificator'));
+        $('.editVariables').click(function(e){
+            var bulletPointHolder = $($(this).data('holderidentificator'));
             bulletPointHolder.find('.bulletPointsButtons, .bullet-point-entry').show();
         });
 
-        jQuery('.chekcboxMark').unbind('click');
+        $('.chekcboxMark').unbind('click');
 
-        jQuery('.chekcboxMark').bind('click', function () {
-            var inputId = jQuery(this).data('id');
-            var holderId = jQuery(this).data('holder-id');
+        $('.chekcboxMark').bind('click', function () {
+            var inputId = $(this).data('id');
+            var holderId = $(this).data('holder-id');
 
-            if (!jQuery(holderId).hasClass('answered'))
+            if (!$(holderId).hasClass('answered'))
             {
-                if (jQuery(inputId).is(':checked'))
+                if ($(inputId).is(':checked'))
                 {
-                    jQuery(inputId).prop('checked', false);
+                    $(inputId).prop('checked', false);
                 }
                 else
                 {
-                     jQuery(inputId).prop('checked', 'checked');
+                     $(inputId).prop('checked', 'checked');
                 }
             }
         });
 
-            jQuery('.question-variable  .labelDiv label').click(function(event){
+            $('.question-variable  .labelDiv label').click(function(event){
                 event.preventDefault();
             });
-            jQuery('body').on('click', '.checkmark', function () {
-                jQuery(this).parent().closest(".question-variable").find("input").attr('data-content','');
+            $('body').on('click', '.checkmark', function () {
+                $(this).parent().closest(".question-variable").find("input").attr('data-content','');
 
-                if (!jQuery(this).parent().closest(".variables-container").hasClass("answered")) {
-                    jQuery(this).parent().find("input").attr('data-content','bar');
-                    jQuery(this).parent().find("input").attr('checked','checked');
+                if (!$(this).parent().closest(".variables-container").hasClass("answered")) {
+                    $(this).parent().find("input").attr('data-content','bar');
+                    $(this).parent().find("input").attr('checked','checked');
                 }
             });
 
@@ -148,7 +147,7 @@
         <div class="left-menu-border"></div>
         <ul class="questionnaire-nav">
             {#documents}
-            <li><a href="javascript:void(0);" rel="document-{jQueryidx}"><p class="nav-text" >{title}</p></a></li>
+            <li><a href="javascript:void(0);" rel="document-{$idx}"><p class="nav-text" >{title}</p></a></li>
             {/documents}
             <div class="clear-fix"></div>
         </ul>
@@ -164,7 +163,7 @@
                      </div>
                  {/questionaireExplanation}
                 {#documents}
-                <div class="questionnaire-document document-{jQueryidx}">
+                <div class="questionnaire-document document-{$idx}">
                     {#sections}
                     <div class="questionnaire-section {@eq key="true" type="boolean" value=hidden}hidden{/eq}">
 

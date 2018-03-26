@@ -73,14 +73,22 @@
                 jQuery('body').on('change', '.question input[rel=radio]', function () {
                     saveAnswer(this);
                 });
-
+                jQuery('body').on('click', '.checkmark', function () {
+                    if(jQuery(this).parent().closest(".question").hasClass("edit")){
+                        jQuery(this).parent().find('input').attr('checked', 'checked');
+                        saveAnswer(jQuery(this).parent().find('input'));
+                    }
+                });
                 // On choose radion option in a yes/no question
                 jQuery('body').on('change', '.question input[rel=yesno]', function () {
                     saveAnswer(this);
                 });
 
                 jQuery('body').on('click', '.editVariables', function () {
-                    jQuery('.variables-container').addClass('edit');
+                    var questionHolder = jQuery(jQuery(this).data('holderidentificator'));
+
+                    questionHolder.addClass('edit');
+                    questionHolder.removeClass('answered');
                     variablesShowSaveButton(jQuery(this));
                 });
 
@@ -131,7 +139,9 @@
 
                 // Edit answered question
                 jQuery('body').on('click', '.editQuestionnaire', function () {
-                    var questionHolder = jQuery(this).parent();
+                    var questionHolder = jQuery(this).data('holderidentificator');
+
+                    jQuery(questionHolder).removeClass('answered');
                     jQuery(questionHolder).addClass('edit');
                     disableAllVariableContainers(true);
                     editQuestion(this);
@@ -194,7 +204,7 @@
                     response = JSON.parse(response);
                     filterQuestions(response.content.documents);
 
-                    dust.render('questionary', {documents: response.content.documents, config: config, tr: translation}, function (err, out) {
+                    dust.render('questionary', {documents: response.content.documents, config: config, tr: translation, questionaireExplanation: response.content.explanation}, function (err, out) {
                         if (err) {
                             config.onError(err);
                         }
@@ -622,9 +632,7 @@
 
         function saveAnswer(self) {
             var inputs;
-
             var questionContainer = jQuery(self).parent();
-
             if (hasContainerSelection(questionContainer)) {
                 inputs = jQuery(questionContainer).find('input');
                 jQuery.each(jQuery(inputs), function (key, input) {
@@ -788,6 +796,7 @@
          * Enable edit button
          */
         function showEditButton(question) {
+            //jQuery(question).removeClass('edit');
             var buttonSave = jQuery(question).find('.saveQuestionnaire');
             var buttonEdit = jQuery(question).find('.editQuestionnaire');
             buttonSave.addClass('disabled');
@@ -815,7 +824,7 @@
          */
         function editQuestion(button) {
             //curent question
-            var questionHolder = jQuery(button).parent();
+            var questionHolder = jQuery(jQuery(button).data('holderidentificator'));
 
             enableQuestionInputs(questionHolder);
             showSaveButton(questionHolder);
@@ -1016,16 +1025,14 @@
          * @param {object} button
          */
         function variablesShowSaveButton(button) {
-            button.hide();
 
-            var parent = button.parent();
-            parent.removeClass('answered');
-            var buttonSave = parent.find('.saveVariables');
+            var buttonSave = jQuery(button.data('save-button-identificator'));
+            button.hide();
 
             buttonSave.removeAttr('disabled');
             buttonSave.removeClass('disabled');
 
-            disableAllVariableInputs(button.parent(), false);
+            disableAllVariableInputs(buttonSave.parent(), false);
 
             //lock all questions
             var questions = jQuery('div.question');
@@ -1149,7 +1156,6 @@
                 async: false,
                 dataType: "json",
                 success: function (list) {
-
                     dust.render('documents', {documents: list.content.documents, downloadUrl: config.downloadUrl}, function (err, out) {
                         if (err) {
                             return console.log(err);
