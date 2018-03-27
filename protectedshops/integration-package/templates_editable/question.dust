@@ -11,11 +11,16 @@
     </div>
     <div class="right-side">
     	<h3><p class="question-title">{title}</p></h3>
-        {#explanation}
-            <div class="explanation">
-                <p>{explanation|s}</p>
-            </div>
-        {/explanation}
+	    {#explanation}
+		<div class="explanation">
+		    <p>{explanation|s}</p>
+		    <div>
+		        <button class="addExplanation" data-questionId="{realId}"  type="button">  Edit explanation</button>
+		    </div>
+		</div>
+	    {:else}
+		<button class="addExplanation" data-questionId="{realId}"  type="button">Add explanation</button>
+	    {/explanation}
     	<div class="description">{description|s}</div>
     	{#options questionId=id questionType=type}
     		{@eq key="yesno" value=questionType}
