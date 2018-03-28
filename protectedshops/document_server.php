@@ -45,9 +45,10 @@ final class DocumentServer
      * @param $module
      * @param $title
      * @param $templateId
+     * @param int $bundleId
      * @return mixed
      */
-    public function createProject($module, $title, $templateId = null)
+    public function createProject($module, $title, $templateId = null, $bundleId = null)
     {
         $function = 'partners/' . $this->partner . '/shops';
         $data['shop'] = array(
@@ -56,6 +57,9 @@ final class DocumentServer
         );
         if ($templateId) {
             $data['shop']['templateId'] = $templateId;
+        }
+        if ($bundleId) {
+            $data['shop']['bundleId'] = $bundleId;
         }
 
         $response = $this->apiRequest('POST', $function, $data);

@@ -10,6 +10,7 @@ Author URI: https://protectedshops.de
 
 /*Plugin helpers*/
 require_once 'helpers.php';
+include_once(ABSPATH . 'wp-includes/pluggable.php');
 
 add_action( 'init', 'activate');
 //add_action('wp', 'protectedshops_frontpage_init');
@@ -91,6 +92,12 @@ function activate()
     dbDelta($sql2);
     dbDelta($sql3);
     dbDelta($sql3_1);
+
+    $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$protected_shop_settings_table' AND column_name = 'gdprPageId'"  );
+
+    if(empty($row)){
+        $wpdb->query("ALTER TABLE $protected_shop_settings_table ADD gdprPageId INT(11) NULL");
+    }
 }
 
 
@@ -137,7 +144,9 @@ function protectedshops_admin_page_display()
                     'partnerSecret' => $_POST['secret'],
                     'url' => $_POST['doc_server_url'],
                     'modules' => $_POST['modules'],
-                    'templatePageId' => $_POST['wordpress_page_id_templates']
+                    'templatePageId' => $_POST['wordpress_page_id_templates'],
+                    'gdprPageId' => $_POST['wordpress_page_id_gdpr']
+
                 ),
                 array('%s', '%s', '%s', '%s', '%s', '%s')
             );
@@ -150,7 +159,8 @@ function protectedshops_admin_page_display()
                     'partnerSecret' => $_POST['secret'],
                     'url' => $_POST['doc_server_url'],
                     'modules' => $_POST['modules'],
-                    'templatePageId' => $_POST['wordpress_page_id_templates']
+                    'templatePageId' => $_POST['wordpress_page_id_templates'],
+                    'gdprPageId' => $_POST['wordpress_page_id_gdpr']
                 ),
                 array(
                     'ID' => $currentSettings[0]->ID
@@ -189,6 +199,7 @@ function protectedshops_frontend_page_init($text)
     $docServer = ps_document_server();
     $psPage = ps_get_page();
     $isTemplatesPage = ps_is_templates_page();
+    $isGdprPage = ps_is_gdpr_page();
     $wpUser = wp_get_current_user();
     /*$wpNonce is used for the plugin API calls so the user can authenticate*/
     $wpNonce = wp_create_nonce('wp_rest');
@@ -198,6 +209,17 @@ function protectedshops_frontend_page_init($text)
 
     try {
         if (isset($_POST['command']) && 'create_projects_from_templates' == $_POST['command']) {
+            $bundleId = get_gdpr_bundle_id();
+            if (!$bundleId)
+            {
+                $result = ps_init_gdpr_projects();
+                if (!$result['success']) {
+                    $error = $result['error'];
+                    throw new Exception('Could not create dsgvo projects.');
+                }
+                $bundleId = get_gdpr_bundle_id();
+            }
+
             $templates = json_decode($docServer->getTemplates($settings[0]->partner,'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
             $templateIds = $_POST['templateIds'];
             $errors = [];
@@ -208,7 +230,7 @@ function protectedshops_frontend_page_init($text)
                         $title = $template['title'];
                     }
                 }
-                $result = ps_create_project($_POST['moduleId'], $title, $templateId);
+                $result = ps_create_project($_POST['moduleId'], $title, $templateId, $bundleId);
                 if (!$result['success']) {
                     $errors[] = $result['error'];
                 }
@@ -216,6 +238,8 @@ function protectedshops_frontend_page_init($text)
             if (!empty($errors)) {
                 $error = join('<br />', $errors);
             }
+
+            goto LOAD_GDPR_PAGE;
         }
 
         if (isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage) {
@@ -224,7 +248,7 @@ function protectedshops_frontend_page_init($text)
             } elseif (isset($_POST['moduleId'])) {
                 if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
                     $result = ps_create_project($_POST['moduleId'], $_POST['title']);
-                    if (! $result['success']) {
+                    if (!$result['success']) {
                         $error = $result['error'];
                     }
 
@@ -288,6 +312,56 @@ function protectedshops_frontend_page_init($text)
                 $usedTemplateIds = $wpdb->get_col("SELECT templateId FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND templateId IS NOT NULL");
                 include($pluginDir . "tabs/template_list.php");
             }
+        } elseif ($isGdprPage) {
+            if (!is_user_logged_in()) {
+                include($pluginDir . "tabs/login_first.php");
+            } else {
+                if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
+                    $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
+                    $wpdb->query($deleteSql);
+                }
+                
+                if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
+                    $result = ps_create_project($_POST['moduleId'], $_POST['title'], null, $_POST['bundleId']);
+                    if (!$result['success']) {
+                        $error = $result['error'];
+                    };
+                }
+
+                LOAD_GDPR_PAGE:
+                $sqlProjects = "SELECT * FROM $projects_table
+                                WHERE wp_user_ID=$wpUser->ID 
+                                AND moduleId IN('dsgvo_ps_DE_verarbeitungsverzeichnis', 'dsgvo_ps_DE_verarbeitungsverzeichnisanlage');";
+
+                $projects = $wpdb->get_results($sqlProjects);
+
+                if (empty($projects))
+                {
+                    $result = ps_init_gdpr_projects();
+                    if (!$result['success']) {
+                        $error = $result['error'];
+                        throw new Exception('Could not create dsgvo projects.');
+                    }
+                }
+
+                $projects = $wpdb->get_results($sqlProjects);
+
+                $shopIds = array();
+                foreach ($projects as $project) {
+                    $shopIds[] = $project->projectId;
+                }
+
+                $remoteProjects = ps_get_remote_projects($settings[0]->partner, $shopIds);
+
+                foreach ($projects as $project) {
+                    $project->documents = [];
+                    $project->isValid = is_project_valid($remoteProjects, $project->projectId);
+                    $project->documents = json_decode($docServer->getDocuments($project->partner, $project->projectId), 1);
+                }
+
+                $psTemplatesUrl = plugins_url('integration-package/templates', __FILE__);
+                include($pluginDir . "tabs/gdpr_list.php");
+            }
         } else {
             return $text;
         }
@@ -309,7 +383,8 @@ function add_scripts()
     wp_register_script('dust-helper', plugins_url('integration-package/js/dust-helpers.js', __FILE__ ), array());
 
     $psPage = ps_get_page();
-    if (isset($psPage[0]) && is_page($psPage[0]->post_title)) {
+
+    if ((isset($psPage[0]) && is_page($psPage[0]->post_title)) || ps_is_gdpr_page() || ps_is_templates_page()) {
         wp_enqueue_script('questionary');
         wp_enqueue_script('dust_core');
         wp_enqueue_script('dust');

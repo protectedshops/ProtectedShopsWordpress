@@ -1,0 +1,1235 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Intact\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-12 12:52+0300\n"
+"PO-Revision-Date: 2016-08-31 22:26+0300\n"
+"Last-Translator: Bogdan Costescu <costescu.bogdan@yahoo.com>\n"
+"Language-Team: KeyDesign <support@keydesign-themes.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;_n:1,2;__ngettext:1,2;"
+"__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;"
+"_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 2.0.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../archive.php:38 ../front-page.php:33 ../index.php:60 ../search.php:37
+msgid "No comments yet"
+msgstr ""
+
+#: ../archive.php:38 ../front-page.php:33 ../index.php:60 ../search.php:37
+msgid "1 comment"
+msgstr ""
+
+#: ../archive.php:38 ../front-page.php:33 ../index.php:60 ../search.php:37
+#, php-format
+msgid "% comments"
+msgstr ""
+
+#: ../archive.php:42 ../core/templates/blog-single/format-standard.php:35
+#: ../front-page.php:37 ../index.php:64 ../search.php:41
+msgid "Previous"
+msgstr ""
+
+#: ../archive.php:42 ../core/templates/blog-single/format-standard.php:37
+#: ../front-page.php:37 ../index.php:64 ../search.php:41
+#: ../single-portfolio.php:240
+msgid "Next"
+msgstr ""
+
+#: ../archive.php:52 ../search.php:51
+msgid "Nothing Found"
+msgstr ""
+
+#: ../archive.php:54 ../search.php:54
+msgid "Ready to publish your first post?"
+msgstr ""
+
+#: ../archive.php:56 ../search.php:56
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again using "
+"different keywords."
+msgstr ""
+
+#: ../archive.php:59 ../search.php:59
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: ../comments.php:14
+msgid "Comments"
+msgstr ""
+
+#: ../comments.php:17 ../comments.php:33
+msgid "Comment navigation"
+msgstr ""
+
+#: ../comments.php:18 ../comments.php:34
+msgid "&larr; Older Comments"
+msgstr ""
+
+#: ../comments.php:19 ../comments.php:35
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#: ../comments.php:41
+msgid "Comments are closed."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:335
+#: ../core/theme-activation.php:99
+msgid "Install Required Plugins"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:336
+#: ../core/theme-activation.php:100
+msgid "Install Plugins"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:337
+#: ../core/theme-activation.php:101
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:338
+msgid "Something went wrong."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:339
+#: ../core/theme-activation.php:103
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:340
+#: ../core/theme-activation.php:104
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:341
+#: ../core/theme-activation.php:105
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin installed."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:342
+#: ../core/theme-activation.php:106
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:343
+#: ../core/theme-activation.php:107
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:344
+#: ../core/theme-activation.php:108
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin activated."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:345
+#: ../core/theme-activation.php:109
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:346
+#, php-format
+msgid "There is an update available for: %1$s."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:347
+#: ../core/theme-activation.php:110
+#, php-format
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin updated."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:348
+#: ../core/theme-activation.php:111
+msgid "Begin installing plugin"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:349
+msgid "Begin updating plugins"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:350
+msgid "Begin activating plugin"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:351
+#: ../core/theme-activation.php:113
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:352
+msgid "Return to the dashboard"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:353
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3195
+#: ../core/theme-activation.php:114
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:354
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2988
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:355
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:356
+msgid "Dismiss this notice"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:561
+msgid "Update Required"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:678
+msgid "Set the parent_slug config variable instead."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:869
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2569
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3616
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:976
+msgid ""
+"The remote plugin package does not contain a folder with the desired "
+"slug and renaming did not work."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:976
+#: ../core/assets/extra/class-tgm-plugin-activation.php:979
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:979
+msgid ""
+"The remote plugin package consists of more than one file, but the files "
+"are not packaged in a folder."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2024
+#, php-format
+msgid "TGMPA v%s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2309
+msgid "Required"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2312
+msgid "Recommended"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2328
+msgid "WordPress Repository"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2331
+msgid "External Source"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2334
+msgid "Pre-Packaged"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2351
+msgid "Not Installed"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2355
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2357
+msgid "Active"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2363
+msgid "Required Update not Available"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2366
+msgid "Requires Update"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2369
+msgid "Update recommended"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2378
+#, php-format
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2424
+#, php-format
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2428
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2432
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2436
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2518
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2526
+msgid "Installed version:"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2534
+msgid "Minimum required version:"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2546
+msgid "Available version:"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2569
+msgid "No plugins to install, update or activate."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2583
+msgid "Plugin"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2584
+msgid "Source"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2585
+msgid "Type"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2589
+msgid "Version"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2590
+msgid "Status"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2639
+#, php-format
+msgid "Install %2$s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2644
+#, php-format
+msgid "Update %2$s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2650
+#, php-format
+msgid "Activate %2$s"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2720
+msgid "Upgrade message from the plugin author:"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2753
+msgid "Install"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2759
+msgid "Update"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2762
+msgid "Activate"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2793
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2795
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2836
+msgid "No plugins are available to be installed at this time."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2838
+msgid "No plugins are available to be updated at this time."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2944
+msgid "No plugins were selected to be activated. No action taken."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:2970
+msgid "No plugins are available to be activated at this time."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3194
+msgid "Plugin activation failed."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3534
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3537
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3539
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3543
+msgid ""
+"The installation and activation process is starting. This process may "
+"take a while on some hosts, so please be patient."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3545
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3545
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3553
+msgid "Show Details"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3545
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3553
+msgid "Hide Details"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3546
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3548
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3551
+msgid ""
+"The installation process is starting. This process may take a while on "
+"some hosts, so please be patient."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3553
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3554
+msgid "All installations have been completed."
+msgstr ""
+
+#: ../core/assets/extra/class-tgm-plugin-activation.php:3556
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../core/options-init.php:91
+msgid "Section via hook"
+msgstr ""
+
+#: ../core/options-init.php:92
+msgid ""
+"This is a section created by adding a filter to the sections array. Can "
+"be used by child themes to add/remove sections from the options."
+msgstr ""
+
+#: ../core/options-init.php:151
+#, php-format
+msgid "Customize &#8220;%s&#8221;"
+msgstr ""
+
+#: ../core/options-init.php:202
+#, php-format
+msgid "By %s"
+msgstr ""
+
+#: ../core/options-init.php:206
+#, php-format
+msgid "Version %s"
+msgstr ""
+
+#: ../core/options-init.php:210
+#: ../core/templates/portfolio/portfolio-meta.php:22
+msgid "Tags"
+msgstr ""
+
+#: ../core/options-init.php:232
+msgid "Global Options"
+msgstr ""
+
+#: ../core/options-init.php:238
+msgid "Main theme color"
+msgstr ""
+
+#: ../core/options-init.php:245
+msgid "Secondary theme color"
+msgstr ""
+
+#: ../core/options-init.php:252
+msgid "Logo style"
+msgstr ""
+
+#: ../core/options-init.php:263
+msgid "Image logo"
+msgstr ""
+
+#: ../core/options-init.php:264
+msgid "Upload logo image"
+msgstr ""
+
+#: ../core/options-init.php:274
+msgid "Secondary image logo"
+msgstr ""
+
+#: ../core/options-init.php:275
+msgid "Upload logo image for sticky navigation"
+msgstr ""
+
+#: ../core/options-init.php:284
+msgid "Text logo"
+msgstr ""
+
+#: ../core/options-init.php:291
+msgid "Main logo text color"
+msgstr ""
+
+#: ../core/options-init.php:299
+msgid "Secondary logo text color"
+msgstr ""
+
+#: ../core/options-init.php:300
+msgid "Logo text color for sticky navigation"
+msgstr ""
+
+#: ../core/options-init.php:310
+msgid "Favicon"
+msgstr ""
+
+#: ../core/options-init.php:311
+msgid "Upload favicon image"
+msgstr ""
+
+#: ../core/options-init.php:319
+msgid "Disable animations on mobile"
+msgstr ""
+
+#: ../core/options-init.php:320
+msgid "Globally turn on/off element animations on mobile"
+msgstr ""
+
+#: ../core/options-init.php:326
+msgid "Preloader"
+msgstr ""
+
+#: ../core/options-init.php:327
+msgid "Turn on/off theme preloader"
+msgstr ""
+
+#: ../core/options-init.php:333
+msgid ""
+"Coming Soon Mode <a href=\"http://keydesign-themes.com/intact/"
+"documentation#ops-coming-soon\" target=\"_blank\" class=\"el-icon-"
+"question-sign\"></a>"
+msgstr ""
+
+#: ../core/options-init.php:334
+msgid "Turn on/off maintenance mode"
+msgstr ""
+
+#: ../core/options-init.php:340
+msgid "Coming Soon Page"
+msgstr ""
+
+#: ../core/options-init.php:342
+msgid "Choose coming soon page"
+msgstr ""
+
+#: ../core/options-init.php:348
+msgid ""
+"Google Map API Key <a href=\"https://developers.google.com/maps/"
+"documentation/javascript/get-api-key\" target=\"_blank\" class=\"el-icon-"
+"question-sign\"></a>"
+msgstr ""
+
+#: ../core/options-init.php:350
+msgid "Generate, copy and paste here Google Maps API Key"
+msgstr ""
+
+#: ../core/options-init.php:355
+msgid "Custom CSS"
+msgstr ""
+
+#: ../core/options-init.php:356
+msgid "Paste your CSS code here."
+msgstr ""
+
+#: ../core/options-init.php:366
+msgid "Header"
+msgstr ""
+
+#: ../core/options-init.php:372
+msgid "Select main navigation style."
+msgstr ""
+
+#: ../core/options-init.php:373
+msgid "You can choose between full width and contained."
+msgstr ""
+
+#: ../core/options-init.php:383
+msgid "Select main navigation behaviour."
+msgstr ""
+
+#: ../core/options-init.php:384
+msgid "You can choose between a sticky or a fixed top menu."
+msgstr ""
+
+#: ../core/options-init.php:394
+msgid "Navigation Background Color"
+msgstr ""
+
+#: ../core/options-init.php:401
+msgid "Sticky Navigation Background Color"
+msgstr ""
+
+#: ../core/options-init.php:408
+msgid "Navigation Text Color"
+msgstr ""
+
+#: ../core/options-init.php:415
+msgid "Sticky Navigation Text Color"
+msgstr ""
+
+#: ../core/options-init.php:422
+msgid "Navigation Text Color on mouse over"
+msgstr ""
+
+#: ../core/options-init.php:429
+msgid "Sticky Navigation Text Color on mouse over"
+msgstr ""
+
+#: ../core/options-init.php:436
+msgid "Revolution Slider Alias"
+msgstr ""
+
+#: ../core/options-init.php:437
+msgid "Insert Revolution Slider Alias here"
+msgstr ""
+
+#: ../core/options-init.php:445
+msgid "Header button"
+msgstr ""
+
+#: ../core/options-init.php:451
+msgid "Show button in header"
+msgstr ""
+
+#: ../core/options-init.php:457
+msgid "Button text"
+msgstr ""
+
+#: ../core/options-init.php:464
+msgid "Button action"
+msgstr ""
+
+#: ../core/options-init.php:476
+msgid "Modal title"
+msgstr ""
+
+#: ../core/options-init.php:483
+msgid "Contact Form ID"
+msgstr ""
+
+#: ../core/options-init.php:491
+msgid "Scroll to section ID"
+msgstr ""
+
+#: ../core/options-init.php:499
+msgid "New page full link"
+msgstr ""
+
+#: ../core/options-init.php:508
+msgid "Typography"
+msgstr ""
+
+#: ../core/options-init.php:514
+msgid "Body font settings"
+msgstr ""
+
+#: ../core/options-init.php:549
+msgid "Headings font settings"
+msgstr ""
+
+#: ../core/options-init.php:584
+msgid "Menu font settings"
+msgstr ""
+
+#: ../core/options-init.php:609
+msgid ""
+"Typekit ID <a href=\"http://keydesign-themes.com/intact/"
+"documentation#ops-typekit\" target=\"_blank\" class=\"el-icon-question-"
+"sign\"></a>"
+msgstr ""
+
+#: ../core/options-init.php:610
+msgid "Paste here Typekit Kit ID"
+msgstr ""
+
+#: ../core/options-init.php:617
+msgid ""
+"Typekit Body Font Selector <a href=\"https://helpx.adobe.com/typekit/"
+"using/css-selectors.html\" target=\"_blank\" class=\"el-icon-question-"
+"sign\"></a>"
+msgstr ""
+
+#: ../core/options-init.php:618 ../core/options-init.php:625
+msgid "Copy paste the font family from typekit website"
+msgstr ""
+
+#: ../core/options-init.php:624
+msgid ""
+"Typekit Headings Font Selector <a href=\"https://helpx.adobe.com/typekit/"
+"using/css-selectors.html\" target=\"_blank\" class=\"el-icon-question-"
+"sign\"></a>"
+msgstr ""
+
+#: ../core/options-init.php:633
+msgid "Portfolio"
+msgstr ""
+
+#: ../core/options-init.php:639
+msgid "Show title"
+msgstr ""
+
+#: ../core/options-init.php:640
+msgid "Activate to display the portfolio item title in the content area."
+msgstr ""
+
+#: ../core/options-init.php:648
+msgid "Meta section"
+msgstr ""
+
+#: ../core/options-init.php:649
+msgid ""
+"Activate to display the meta section (Category, Tags, Publish Date)."
+msgstr ""
+
+#: ../core/options-init.php:657
+msgid "Social media section"
+msgstr ""
+
+#: ../core/options-init.php:658
+msgid "Activate to display the share on social media buttons."
+msgstr ""
+
+#: ../core/options-init.php:666
+msgid "Page background color"
+msgstr ""
+
+#: ../core/options-init.php:667
+msgid "Select the background color for the content area."
+msgstr ""
+
+#: ../core/options-init.php:676
+msgid "Shop"
+msgstr ""
+
+#: ../core/options-init.php:682
+msgid "WooCommerce Support"
+msgstr ""
+
+#: ../core/options-init.php:683
+msgid ""
+"Please install and activate WooCommerce before activating this option."
+msgstr ""
+
+#: ../core/options-init.php:691
+msgid "WooCommerce Single Product Sidebar"
+msgstr ""
+
+#: ../core/options-init.php:692
+msgid "Enable/Disable Shop sidebar on single product page."
+msgstr ""
+
+#: ../core/options-init.php:702
+msgid "Blog"
+msgstr ""
+
+#: ../core/options-init.php:707
+msgid "Blog Subtitle"
+msgstr ""
+
+#: ../core/options-init.php:714
+msgid "Display sidebar"
+msgstr ""
+
+#: ../core/options-init.php:715
+msgid "Turn on/off blog sidebar"
+msgstr ""
+
+#: ../core/options-init.php:721
+msgid "Minimal Blog"
+msgstr ""
+
+#: ../core/options-init.php:722
+msgid "Change blog layout to minimal style"
+msgstr ""
+
+#: ../core/options-init.php:729
+msgid "404 Page"
+msgstr ""
+
+#: ../core/options-init.php:734
+msgid "Title"
+msgstr ""
+
+#: ../core/options-init.php:741
+msgid "Subtitle"
+msgstr ""
+
+#: ../core/options-init.php:748
+msgid "Back to homepage text"
+msgstr ""
+
+#: ../core/options-init.php:756
+msgid "Background Image"
+msgstr ""
+
+#: ../core/options-init.php:757
+msgid "Upload 404 overlay image"
+msgstr ""
+
+#: ../core/options-init.php:766
+msgid "Footer"
+msgstr ""
+
+#: ../core/options-init.php:772
+msgid "Set footer fixed to bottom"
+msgstr ""
+
+#: ../core/options-init.php:773 ../core/options-init.php:780
+msgid "Turn on/off this feature"
+msgstr ""
+
+#: ../core/options-init.php:779
+msgid "Show back to top button"
+msgstr ""
+
+#: ../core/options-init.php:786
+msgid "Upper Footer Background"
+msgstr ""
+
+#: ../core/options-init.php:793
+msgid "Lower Footer Background"
+msgstr ""
+
+#: ../core/options-init.php:800
+msgid "Footer Headings Color"
+msgstr ""
+
+#: ../core/options-init.php:807
+msgid "Footer Text Color"
+msgstr ""
+
+#: ../core/options-init.php:814
+msgid "Copyright Text"
+msgstr ""
+
+#: ../core/options-init.php:815
+msgid "Enter footer bottom copyright text"
+msgstr ""
+
+#: ../core/options-init.php:821
+msgid "Social Icons"
+msgstr ""
+
+#: ../core/options-init.php:822
+msgid "Select visible social icons"
+msgstr ""
+
+#: ../core/options-init.php:847
+msgid "Facebook Link"
+msgstr ""
+
+#: ../core/options-init.php:848
+msgid "Enter Facebook URL"
+msgstr ""
+
+#: ../core/options-init.php:856
+msgid "Twitter Link"
+msgstr ""
+
+#: ../core/options-init.php:857
+msgid "Enter Twitter URL"
+msgstr ""
+
+#: ../core/options-init.php:865
+msgid "Google+ Link"
+msgstr ""
+
+#: ../core/options-init.php:866
+msgid "Enter Google+ URL"
+msgstr ""
+
+#: ../core/options-init.php:872
+msgid "Pinterest Link"
+msgstr ""
+
+#: ../core/options-init.php:873
+msgid "Enter Pinterest URL"
+msgstr ""
+
+#: ../core/options-init.php:881
+msgid "Youtube Link"
+msgstr ""
+
+#: ../core/options-init.php:882
+msgid "Enter Youtube URL"
+msgstr ""
+
+#: ../core/options-init.php:889
+msgid "Linkedin Link"
+msgstr ""
+
+#: ../core/options-init.php:890
+msgid "Enter Linkedin URL"
+msgstr ""
+
+#: ../core/options-init.php:897
+msgid "Instagram Link"
+msgstr ""
+
+#: ../core/options-init.php:898
+msgid "Enter Instagram URL"
+msgstr ""
+
+#: ../core/options-init.php:906
+msgid "Import Demo"
+msgstr ""
+
+#: ../core/options-init.php:907
+msgid ""
+"Import Demo Content <a href=\"http://keydesign-themes.com/intact/"
+"documentation#gs-importing-demo-content\" target=\"_blank\" class=\"el-"
+"icon-question-sign\"></a>"
+msgstr ""
+
+#: ../core/options-init.php:913
+msgid ""
+"Import Demo <a href=\"http://keydesign-themes.com/intact/"
+"documentation#gs-importing-demo-content\" target=\"_blank\" class=\"el-"
+"icon-question-sign\"></a>"
+msgstr ""
+
+#: ../core/templates/portfolio/portfolio-meta.php:5
+msgid "Category"
+msgstr ""
+
+#: ../core/templates/portfolio/portfolio-meta.php:40
+msgid "Date published"
+msgstr ""
+
+#: ../core/templates/portfolio/portfolio-meta.php:48
+msgid "Share on"
+msgstr ""
+
+#: ../core/theme-activation.php:16
+msgid "Intact Framework"
+msgstr ""
+
+#: ../core/theme-activation.php:26
+msgid "Wordpress Importer"
+msgstr ""
+
+#: ../core/theme-activation.php:36
+msgid "WPBakery Visual Composer"
+msgstr ""
+
+#: ../core/theme-activation.php:46
+msgid "WPBakery Templatera"
+msgstr ""
+
+#: ../core/theme-activation.php:56
+msgid "Slider Revolution"
+msgstr ""
+
+#: ../core/theme-activation.php:66
+msgid "KeyDesign Addon"
+msgstr ""
+
+#: ../core/theme-activation.php:102
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: ../core/theme-activation.php:112
+msgid "Activate installed plugin"
+msgstr ""
+
+#: ../core/theme-activation.php:115
+#, php-format
+msgid "All plugins installed and activated successfully. %s"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:12
+msgid "Page title & subtitle:"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:17
+msgid "Page settings:"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:23
+msgid "Single page template"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:27
+msgid "Item align on frontpage:"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:43
+msgid "Hide page title"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:51
+msgid "If checked, title will be hidden."
+msgstr ""
+
+#: ../core/theme-pagemeta.php:57
+msgid "Page subtitle"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:61
+msgid "Write the section subtitle. Displayed under the main page title."
+msgstr ""
+
+#: ../core/theme-pagemeta.php:67
+msgid "Title and subtitle color"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:71
+msgid "Specify the page title and subtitle color. Eg. #FFFFFF"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:90
+msgid "Overlay"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:98
+msgid "If checked, an overlay having the main theme color will be applied."
+msgstr ""
+
+#: ../core/theme-pagemeta.php:104
+msgid "Full width"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:112
+msgid "If checked, section will be set to full width."
+msgstr ""
+
+#: ../core/theme-pagemeta.php:118
+msgid "Background color"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:122
+msgid "Specify the page background color. Eg. #FFFFFF"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:128
+msgid "Top padding"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:132
+msgid "Specify the page top padding value. Eg. 10px"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:138
+msgid "Bottom padding"
+msgstr ""
+
+#: ../core/theme-pagemeta.php:142
+msgid "Specify the page bottom padding value. Eg. 10px"
+msgstr ""
+
+#: ../core/theme-sidebars.php:7
+msgid "Blog Sidebar"
+msgstr ""
+
+#: ../core/theme-sidebars.php:9
+msgid ""
+"Add widgets for the blog sidebar area. If none added, default sidebar "
+"widgets will be used."
+msgstr ""
+
+#: ../core/theme-sidebars.php:16
+msgid "Shop Sidebar"
+msgstr ""
+
+#: ../core/theme-sidebars.php:18
+msgid "Add widgets for the shop sidebar area."
+msgstr ""
+
+#: ../core/theme-sidebars.php:26
+msgid "Footer first widget area"
+msgstr ""
+
+#: ../core/theme-sidebars.php:28
+msgid "Add one widget for the first footer widget area."
+msgstr ""
+
+#: ../core/theme-sidebars.php:36
+msgid "Footer second widget area"
+msgstr ""
+
+#: ../core/theme-sidebars.php:38
+msgid "Add one widget for the second footer widget area."
+msgstr ""
+
+#: ../core/theme-sidebars.php:46
+msgid "Footer third widget area"
+msgstr ""
+
+#: ../core/theme-sidebars.php:48
+msgid "Add one widget for the third footer widget area."
+msgstr ""
+
+#: ../core/theme-sidebars.php:56
+msgid "Footer fourth widget area"
+msgstr ""
+
+#: ../core/theme-sidebars.php:58
+msgid "Add one widget for the fourth footer widget area."
+msgstr ""
+
+#: ../core/theme-woocommerce.php:142
+msgid "Subtotal:"
+msgstr ""
+
+#: ../core/theme-woocommerce.php:148
+msgid "View Cart"
+msgstr ""
+
+#: ../core/theme-woocommerce.php:150
+msgid "Checkout"
+msgstr ""
+
+#: ../core/theme-woocommerce.php:210
+msgid "Your cart is currently empty"
+msgstr ""
+
+#: ../core/widgets/socials.php:14
+msgid "List your social media links."
+msgstr ""
+
+#: ../front-page.php:48 ../index.php:75 ../single.php:37
+msgid "Error 404 - Not Found"
+msgstr ""
+
+#: ../front-page.php:50 ../index.php:77
+msgid "Sorry, no posts matched your criteria."
+msgstr ""
+
+#: ../header.php:136
+msgid "Currently browsing"
+msgstr ""
+
+#: ../header.php:140
+msgid "Search result for"
+msgstr ""
+
+#: ../header.php:144
+msgid "All posts tagged"
+msgstr ""
+
+#: ../header.php:148
+msgid "All posts by"
+msgstr ""
+
+#: ../header.php:152 ../header.php:156 ../header.php:160
+msgid "Posts archive for"
+msgstr ""
+
+#: ../page.php:49
+msgid "Sorry, this page does not exist."
+msgstr ""
+
+#: ../single-portfolio.php:233
+msgid "Prev"
+msgstr ""
+
+#: ../single.php:39
+msgid "Sorry, but you are looking for something that isn't here."
+msgstr ""
+
+#: ../woocommerce/single-product/product-image.php:48
+msgid "Placeholder"
+msgstr ""

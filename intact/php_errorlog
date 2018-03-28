@@ -1,0 +1,2 @@
+[23-Jun-2017 11:05:31 CST6CDT] PHP Fatal error:  Call to undefined function get_option() in /home/keydesi8/public_html/intact/wp-content/themes/intact/index.php on line 17
+[11-Aug-2017 03:28:10 CST6CDT] PHP Fatal error:  Call to undefined function get_template_directory() in /home/keydesi8/public_html/intact/wp-content/themes/intact/functions.php on line 9

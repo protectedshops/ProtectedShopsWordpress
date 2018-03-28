@@ -42,6 +42,13 @@ function ps_is_templates_page()
     return (isset($settings[0]) && $settings[0]->templatePageId == get_the_ID());
 }
 
+function ps_is_gdpr_page()
+{
+    $settings = ps_get_settings();
+
+    return (isset($settings[0]) && $settings[0]->gdprPageId == get_the_ID());
+}
+
 function ps_is_project_access_allowed($projectId, $userId)
 {
     global $wpdb;
@@ -82,7 +89,25 @@ function ps_project_change($partner, $project)
     $wpdb->query($updateSql);
 }
 
-function ps_create_project($moduleId, $title, $templateId = null)
+function get_gdpr_bundle_id()
+{
+    global $wpdb;
+    $wpUser = wp_get_current_user();
+    $projects_table = $wpdb->prefix . 'ps_project';
+
+    $sql = "SELECT bundleId FROM $projects_table WHERE wp_user_ID = $wpUser->ID AND moduleId = 'dsgvo_ps_DE_verarbeitungsverzeichnis'";
+
+    $result = $wpdb->get_results($sql);
+
+    if (empty($result))
+    {
+        return null;
+    }
+
+    return $result[0]->bundleId;
+}
+
+function ps_create_project($moduleId, $title, $templateId = null, $bundleId = null)
 {
     global $wpdb;
     $wpUser = wp_get_current_user();
@@ -91,7 +116,7 @@ function ps_create_project($moduleId, $title, $templateId = null)
     $error = '';
 
     $docServer = ps_document_server();
-    $newProject = $docServer->createProject($moduleId, $title);
+    $newProject = $docServer->createProject($moduleId, $title, $templateId, $bundleId);
     if (array_key_exists('shopId', $newProject)) {
         $wpdb->insert(
             $projects_table,
@@ -109,6 +134,71 @@ function ps_create_project($moduleId, $title, $templateId = null)
         $success = true;
     } elseif (array_key_exists('error_description', $newProject)) {
         $error = $newProject['error_description'];
+    }
+
+    return array(
+        'success' => $success,
+        'error' => $error
+    );
+}
+
+function ps_init_gdpr_projects()
+{
+    global $wpdb;
+    $wpUser = wp_get_current_user();
+    $projects_table = $wpdb->prefix . 'ps_project';
+    $success = false;
+    $error = '';
+
+    $docServer = ps_document_server();
+    $vvhProject = $docServer->createProject('dsgvo_ps_DE_verarbeitungsverzeichnis', 'Verzeichnis von Verarbeitungstätigkeiten Hauptblatt');
+    if (array_key_exists('shopId', $vvhProject)) {
+        $wpdb->insert(
+            $projects_table,
+            array(
+                'projectId' => $vvhProject['shopId'],
+                'title' => $vvhProject['title'],
+                'moduleId' => $vvhProject['module'],
+                'bundleId' => $vvhProject['bundleId'],
+                'partner' => $vvhProject['partnerId'],
+                'wp_user_ID' => $wpUser->ID,
+                'templateId' => null
+            ),
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+        );
+        $success = true;
+    } elseif (array_key_exists('error_description', $vvhProject)) {
+        $error = $vvhProject['error_description'];
+
+        return array(
+            'success' => $success,
+            'error' => $error
+        );
+    }
+
+    $vvaProject = $docServer->createProject(
+        'dsgvo_ps_DE_verarbeitungsverzeichnisanlage',
+        'Verzeichnis von Verarbeitungstätigkeiten Anlage',
+        null,
+        $vvhProject['bundleId']
+        );
+    if (array_key_exists('shopId', $vvaProject)) {
+        $wpdb->insert(
+            $projects_table,
+            array(
+                'projectId' => $vvaProject['shopId'],
+                'title' => $vvaProject['title'],
+                'moduleId' => $vvaProject['module'],
+                'bundleId' => $vvhProject['bundleId'],
+                'partner' => $vvaProject['partnerId'],
+                'wp_user_ID' => $wpUser->ID,
+                'templateId' => null
+            ),
+            array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+        );
+        $success = true;
+    } elseif (array_key_exists('error_description', $vvaProject)) {
+        $error = $vvaProject['error_description'];
     }
 
     return array(

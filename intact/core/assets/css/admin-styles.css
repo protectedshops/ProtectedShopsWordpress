@@ -1,0 +1,17 @@
+/*
+Admin custom CSS
+@package intact
+by KeyDesign
+*/
+
+/* --------------------------------------
+ Meta box custom styles
+-----------------------------------------*/
+.kd_meta_block_prim { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #ddd; }
+.meta_block_top { margin-top: 10px; }
+.meta_block_bottom { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+.kd_meta_block_prim label { width: 20%; display: inline-block; font-weight: bold; padding-top: 4px; }
+.kd_meta_block_prim .kd-meta-desc { display: block; width: 18%; padding-top: 6px; clear: both; font-style: italic; font-size: 12px; }
+.kd_meta_block_prim input { color: #000; font-size: 12px; display: inline-block; }
+.kd_meta_block_prim .page_subtitle_box { width: 73%; }
+.kd_meta_block_prim input[type=checkbox] { margin-top: 6px; }

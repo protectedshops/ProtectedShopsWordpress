@@ -24,6 +24,15 @@
     </select>
     <br />
 
+    <br />
+    <label for="wordpress_page_id_templates">Wählen Sie die Seite für die DSGVO-Seite</label>
+    <select name="wordpress_page_id_gdpr" id="wordpress_page_id_gdpr" required="required">
+        <?php foreach ($wpPages as $page) {?>
+            <option  value="<?php echo $page->ID; ?>" <?php if ($currentSettings[0]->gdprPageId == $page->ID) echo 'selected';?> ><?php echo $page->post_title; ?></option>
+        <?php } ?>
+    </select>
+    <br />
+
     <input type="submit" value="Save" class="button button-primary button-large">
 </form>
 

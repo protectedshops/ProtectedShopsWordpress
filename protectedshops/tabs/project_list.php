@@ -1,4 +1,8 @@
-
+<style>
+    .document-title-tr h4 {
+        font-size: 16px;
+    }
+</style>
 <script>
     jQuery(document).ready(function($) {
         $(".generate-questionary").click(function () {
@@ -40,6 +44,7 @@
     });
 </script>
 
+<?php if (empty($projects) || $psPage[0]->moduleId != 'dsgvo_ps_DE_selfaudit') {?>
 <p>
     <div class="form-submit">
         <button id="show_create_project_table_button" class="fusion-button button-large">Neues Dokument hinzufügen</button>
@@ -56,6 +61,8 @@
         </div>
     </div>
 </p>
+<?php } ?>
+
 <?php if ($error) {include 'error.php'; } ?>
 <p>
     <table class="table">
@@ -78,8 +85,7 @@
         </tr>
         <?php foreach ($project->documents['content']['documents'] as $document) { ?>
             <tr style="display: none;" class="documents-<?php echo $project->projectId; ?>" class="project-documents">
-                <td style="white-space: nowrap;"><h4><b><?php echo $document['name'] . " volstatighen butermuther zieg HELL ffff (DEMO)"; ?></b></h4></td>
-                <td></td>
+                <td class="document-title-tr" style="white-space: nowrap;"><h4><b><?php echo $document['name']; ?></b></h4></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -88,6 +94,7 @@
                     <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=pdf" target="_blank"><img width="36" src="<?php echo $pluginURL . "assets/icons/icon-pdf.png"; ?>"></a>
                     <a href="<?php echo site_url() . "/wp-json/protectedshops/v1/questionary/download"; ?>?_wpnonce=<?php echo $wpNonce; ?>&partner=<?php echo $project->partner; ?>&project=<?php echo $project->projectId; ?>&docType=<?php echo $document['type']; ?>&formatType=text" target="_blank"><img width="36" src="<?php echo $pluginURL . "assets/icons/icon-txt.png"; ?>"></a>
                 </td>
+                <td></td>
             </tr>
         <?php }?>
 

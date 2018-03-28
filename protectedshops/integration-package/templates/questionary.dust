@@ -148,14 +148,14 @@
         <div class="left-menu-border"></div>
         <ul class="questionnaire-nav">
             {#documents}
-            <li><a href="javascript:void(0);" rel="document-{jQueryidx}"><p class="nav-text" >{title}</p></a></li>
+            <li><a href="javascript:void(0);" rel="document-{$idx}"><p class="nav-text" >{title}</p></a></li>
             {/documents}
             <div class="clear-fix"></div>
         </ul>
     </div>
     {! ---- questionary ---- !}
 
-    <div id="content" class="content-blog">		
+    <div id="content" class="content-blog">
         <form novalidate id="questionnaire-form" action="{config.submitQuestionaryUrl}" method="post">
             <div id="questionnaire">
                  {#questionaireExplanation}
@@ -164,7 +164,7 @@
                      </div>
                  {/questionaireExplanation}
                 {#documents}
-                <div class="questionnaire-document document-{jQueryidx}">
+                <div class="questionnaire-document document-{$idx}">
                     {#sections}
                     <div class="questionnaire-section {@eq key="true" type="boolean" value=hidden}hidden{/eq}">
 
@@ -186,7 +186,7 @@
                             </div>
                             <div class="right-side">
                             <h3><p class="question-title">{tr.pleaseFill}:</p></h3>
-      
+
                             {#variables}
                                 {>variable /}
                             {/variables}

@@ -74,7 +74,7 @@ img {border-style:none;}
 
 #sidebar{
     float:left;
-    width:214px;
+    width:204px;
 }
 .navigation{
     border-right:1px solid #a8a8a8;
@@ -150,6 +150,7 @@ img {border-style:none;}
     padding: 12px 12px 12px 50px;
     outline: 0;
     color:#fff;
+    height: 50px;
 }
 .questionnaire-nav li a:hover:after{
     display: none;
@@ -228,7 +229,7 @@ img {border-style:none;}
     background-size: contain;
 }
 .add-bullet-point-entry {
-    margin: 40px 0;
+    margin-bottom: 40px;
     border: medium none;
     cursor: pointer;
     display: block;
@@ -264,7 +265,7 @@ img {border-style:none;}
     font-family: 'Roboto', sans-serif;
 }
 .question button.saveQuestionnaire, .variables-container button.saveVariables {
-    margin: 40px 0;
+    margin-bottom: 40px;
     border: medium none;
     cursor: pointer;
     display: block;
@@ -288,11 +289,9 @@ img {border-style:none;}
 
 .question button.editQuestionnaire, .variables-container button.editVariables {
     position: relative;
-    background: none;
     border: 0px;
     padding: 0;
     text-decoration: underline;
-    display: none;
     margin-top: 50px;
 }
 .question button.editQuestionnaire:after{
@@ -315,7 +314,6 @@ button.editVariables {
     border: 0px;
     padding: 0;
     text-decoration: underline;
-    display: none;
     margin-top: 50px;
 }
 button.editVariables:after{
@@ -355,16 +353,17 @@ button.editVariables:after{
 
 .questionary-container .question-variable input[type=text]{
     margin: 0;
+    margin-bottom: 40px;
     padding: 3px;
     width: 538px;
-    height: 32px;
+    height: 29px;
     border: 1px solid #707070;
     border-radius: 5px;
     color: #000000;
     font: 12px/16px Roboto,sans-serif;
 }
 
-.questionary-container textarea.questionnaire-textarea[disabled=disabled], 
+.questionary-container textarea.questionnaire-textarea[disabled=disabled],
 .questionary-container input[disabled=disabled]{
     background-color: #f8f8f8;
 }
@@ -375,6 +374,7 @@ button.editVariables:after{
 
 .questionary-container .questionnaire-textarea {
     margin: 0;
+    margin-bottom: 40px;
     padding: 0;
     width: 538px;
     height: 120px;
@@ -384,7 +384,7 @@ button.editVariables:after{
 
 .questionary-container .error-focus .questionnaire-textarea,
 .questionary-container .error-focus input[type=text]{
-    border: 1px solid #ce3537;	
+    border: 1px solid #ce3537;
 }
 
 button.inactive, a.button.inactive{
@@ -426,9 +426,9 @@ a.button.active, a.button.inactive{
 }
 
 .questionnaire-warning-text{
-    margin: 0px 0px 20px;
-    text-align: center;
-
+    float: left;
+    max-width: 400px;
+    margin-left: 40px;
 }
 
 .questionary-container .description {
@@ -436,13 +436,54 @@ a.button.active, a.button.inactive{
     padding: 0;
     width: 538px;
     font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-size: 13px;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 19px;
+}
+.radio .choiceDiv{
+    margin-bottom: 6px;
+}
+.questionary-container .description .bullet-point-list{
+    list-style-type: none;
+}
+.questionary-container .description .bullet-point-list li, .questionary-container .description li{
+    position: relative;
+}
+.questionary-container .description .bullet-point-list li:before{
+    content: '';
+    position: absolute;
+    left: -15px;
+    top:4px;
+    height: 9px;
+    width: 9px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    background-color: #3D9329;
+}
+.questionary-container .description li:before{
+    content: '';
+    position: absolute;
+    left: -15px;
+    top:5px;
+    height: 9px;
+    width: 9px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    background-color: #3D9329;
+}
+.questionary-container .description u li{
+    margin-left: 16px;
+}
+
+.questionary-container .description>li{
+    margin-left: 16px;
 }
 
 .questionary-container .explanation {
     margin:0;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     padding: 12px;
     width: 538px;
     background-color: #eaf3e8;
@@ -469,6 +510,59 @@ a.button.active, a.button.inactive{
     -webkit-background-size: contain;
     background-size: contain;
 }
+.questionary-container .question-variable .description.bulletPointsButtons{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+}
+.questionary-container .question-variable .description.bulletPointsButtons:before{
+    position: absolute;
+    content: '';
+    top:-10px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #efefef;
+}
+.questionary-container .question-variable .description.bulletPointsButtons:after{
+    position: absolute;
+    content: '';
+    bottom:-57px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #efefef;
+}
+.questionary-container .question-variable .description.bulletPointsButtons input{
+    max-width: 340px;
+    margin-bottom: 20px;
+}
+.questionary-container .question-variable .description.bulletPointsButtons button{
+    position: relative;
+    margin-bottom: 20px;
+    top: 3px;
+    border:none;
+    background-color: #707070;
+    color: #fff;
+    line-height: 37px;
+}
+.questionary-container .question-variable .description.bulletPointsButtons button:before{
+    content: '';
+    position: absolute;
+    top:0;
+    left: 10px;
+    height: 35px;
+    width: 35px;
+    background: url(../images/plus@2x.png);
+    background-repeat: no-repeat;
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-position: center center;
+}
 .questionary-container .question-variable .description {
     margin-top: 5px;
     margin-bottom: 16px;
@@ -479,7 +573,10 @@ a.button.active, a.button.inactive{
     color: #ce3537;
     display: none;
 }
-
+.right-side .margin{
+    display: block;
+    margin-bottom: 40px;
+}
 .question {
     position: relative;
     display: flex;
@@ -598,6 +695,7 @@ a.button.active, a.button.inactive{
 }
 #submitQuestionnaire, .nextDocument{
     float: right;
+    margin-right: 40px;
 }
 
 .prevDocument{
@@ -649,7 +747,7 @@ a.button.active, a.button.inactive{
 .left-menu-border{
     border: none;
     width: 705px;
-    margin-left: 204px; 
+    margin-left: 204px;
     height: 6px;
     border-bottom: none;
 }
@@ -748,10 +846,13 @@ a.button.active, a.button.inactive{
     display: inline-block;
     cursor: pointer;
     font-size: 14px;
-    padding: 12px 14px;
+    padding: 10px 14px;
     margin:0;
     background-color: #efefef;
     text-align: center;
+}
+.radio-group label:last-child{
+    border-left: 1px solid #707070;
 }
 .radio-group input[type=radio]:checked + label{
     color: #FFF;
@@ -773,7 +874,7 @@ a.button.active, a.button.inactive{
     background-position: center center;
     -webkit-background-size: contain;
     background-size: contain;
-    
+
 }
 .radio-group label + input[type=radio] + label {
 
@@ -900,7 +1001,8 @@ a.button.active, a.button.inactive{
     display: block;
 }
 .inputDiv input:checked ~ .checkmark {
-    background-color: #cc7e35;
+    background-color: #3D9329;
+    border: 1px solid #3D9329;
 }
 .inputDiv .checkmark:after {
     content: "";
@@ -909,6 +1011,15 @@ a.button.active, a.button.inactive{
 }
 .inputDiv input:checked ~ .checkmark:after {
     display: block;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 100%;
 }
 .inputDiv .checkmark:after {
     left: 3px;
@@ -975,14 +1086,61 @@ a.button.active, a.button.inactive{
 }
 
 .questionary-container .topbar input {
-
+    position: absolute;
+    opacity: 0;
+    visibility: visible;
 }
 .questionary-container .topbar span{
-    display: inline-block;
-    padding: 4px;
     float: right;
-    font-weight: 400;
-    background-color: #ffffc9;
+}
+.questionary-container .topbar label{
+    position: relative;
+    font-size: 14px;
+    display: block;
+    color: #515151;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    background-color: #efefef;
+    border: 1px solid #707070;
+    border-radius: 5px;
+    margin: 0;
+    padding: 5px 8px 5px 40px;
+}
+.questionary-container .topbar label:before{
+    content: "";
+    position: absolute;
+    top:6px;
+    left: 10px;
+    width: 22px;
+    height: 20px;
+    background: url(../images/eye_closed.png);
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.questionary-container .topbar.bottom{
+    margin-bottom: 40px;
+}
+.questionary-container .topbar.bottom label{
+    margin-right: 40px;
+}
+.questionary-container .topbar input[type=checkbox]:checked + label{
+    background-color: #707070;
+    color: #fff;
+}
+.questionary-container .topbar input[type=checkbox]:checked + label:before{
+    content: "";
+    position: absolute;
+    top:6px;
+    left: 10px;
+    width: 22px;
+    height: 20px;
+    background: url(../images/eye_open.png);
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 .bullet-point-list span b:hover
 {

@@ -59,7 +59,6 @@
                     <ul id="{id}-bullet-list" data-variableid={id} class="bullet-point-list">
                         {value|s}
                     </ul>
-                    sadsad ddd
                 </div>
                 <input {?value}style="display: none;"{/value} type="text" id="{id}-bullet-point-entry" class="bullet-point-entry" value="{?value}{tr.addNewBulletPointEntry}{/value}" />
                 <br />
