@@ -209,6 +209,9 @@ function protectedshops_frontend_page_init($text)
 
     try {
         if (isset($_POST['command']) && 'create_projects_from_templates' == $_POST['command']) {
+            if (!is_user_logged_in()) {
+                wp_redirect( home_url() . '/login' );
+            }
             $bundleId = get_gdpr_bundle_id();
             if (!$bundleId)
             {
@@ -244,7 +247,7 @@ function protectedshops_frontend_page_init($text)
 
         if (isset($psPage[0]) && is_page($psPage[0]->post_title) && $psPage) {
             if (!is_user_logged_in()) {
-                include($pluginDir . "tabs/login_first.php");
+                wp_redirect( home_url() . '/login' );
             } elseif (isset($_POST['moduleId'])) {
                 if (array_key_exists('command', $_POST) && 'create_project' == $_POST['command']) {
                     $result = ps_create_project($_POST['moduleId'], $_POST['title']);
@@ -272,6 +275,9 @@ function protectedshops_frontend_page_init($text)
 
             } else {
                 LOAD_PAGE:
+                if (!is_user_logged_in()) {
+                    wp_redirect( home_url() . '/login' );
+                }
                 if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
                     $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
                     $wpdb->query($deleteSql);
@@ -297,7 +303,7 @@ function protectedshops_frontend_page_init($text)
             }
         } elseif ($isTemplatesPage) {
             if (!is_user_logged_in()) {
-                include($pluginDir . "tabs/login_first.php");
+                wp_redirect( home_url() . '/login' );
             } else {
                 $templates = json_decode($docServer->getTemplates($settings[0]->partner, 'dsgvo_ps_DE_verarbeitungsverzeichnisanlage'), true);
                 $groups = [];
@@ -314,7 +320,7 @@ function protectedshops_frontend_page_init($text)
             }
         } elseif ($isGdprPage) {
             if (!is_user_logged_in()) {
-                include($pluginDir . "tabs/login_first.php");
+                wp_redirect( home_url() . '/login' );
             } else {
                 if (array_key_exists('command', $_GET) && 'delete_project' == $_GET['command']) {
                     $deleteSql = "DELETE FROM $projects_table WHERE wp_user_ID=$wpUser->ID AND projectId='" . sanitize_text_field($_GET['project']) . "';";
@@ -329,6 +335,9 @@ function protectedshops_frontend_page_init($text)
                 }
 
                 LOAD_GDPR_PAGE:
+                if (!is_user_logged_in()) {
+                    wp_redirect( home_url() . '/login' );
+                }
                 $sqlProjects = "SELECT * FROM $projects_table
                                 WHERE wp_user_ID=$wpUser->ID 
                                 AND moduleId IN('dsgvo_ps_DE_verarbeitungsverzeichnis', 'dsgvo_ps_DE_verarbeitungsverzeichnisanlage');";
